@@ -1,0 +1,95 @@
+---
+title: Developer Portfolio & Blog Platform
+description: This site — a production-ready personal portfolio and content publishing platform built with Next.js 14, Contentlayer, and Tailwind CSS.
+date: 2024-05-01
+technologies: ["Next.js 14", "TypeScript", "Tailwind CSS", "MDX", "Contentlayer2", "Vercel"]
+githubUrl: https://github.com/dev-akor/portfolio
+liveUrl: https://solomonakor.dev
+status: active
+featured: false
+---
+
+## Overview
+
+This portfolio is more than a personal website — it's a complete content publishing platform built for long-term use. It combines:
+
+- Personal developer portfolio
+- Personal brand website
+- Business profile for Kira Scales Limited
+- Long-term blog for technology, business, and industry content
+
+## Why Build Custom?
+
+I could have used Notion, Hashnode, or other platforms. I chose to build because:
+
+1. **Full control** over design, performance, and SEO
+2. **MDX blogging** lets me embed interactive components in articles
+3. **Learning opportunity** — building the thing is how I learn the stack
+4. **Brand cohesion** — one domain for all my content and business presence
+
+## Technical Highlights
+
+### Contentlayer2 Integration
+
+Content is managed with Contentlayer2, which transforms MDX files into type-safe data:
+
+```typescript
+export const Post = defineDocumentType(() => ({
+  name: 'Post',
+  filePathPattern: 'blog/**/*.mdx',
+  contentType: 'mdx',
+  fields: {
+    title: { type: 'string', required: true },
+    category: { type: 'string', required: true },
+    tags: { type: 'list', of: { type: 'string' } },
+    featured: { type: 'boolean' },
+  },
+  computedFields: {
+    slug: { type: 'string', resolve: (p) => p._raw.flattenedPath.replace('blog/', '') },
+    readingTime: { type: 'string', resolve: (p) => readingTime(p.body.raw).text },
+  },
+}))
+```
+
+### Performance
+
+Built with performance as a primary constraint:
+- Static generation for all content pages
+- Image optimization with `next/image`
+- Font optimization with `next/font`
+- Minimal JavaScript on the client
+- Tailwind CSS for zero-runtime styles
+
+### SEO
+
+Every page has:
+- Dynamic metadata (title, description, OG tags)
+- Structured data (JSON-LD)
+- Canonical URLs
+- Sitemap generation
+- RSS feed
+
+## Design Philosophy
+
+The design follows a minimal, professional aesthetic:
+- **Dark mode** by default with light mode toggle
+- **Typography-first** — content is the focus
+- **Consistent spacing** using Tailwind's scale
+- **Fast interactions** — hover states, transitions
+
+## Deployment
+
+Deployed on Vercel with:
+- Automatic deployments from main branch
+- Preview deployments for PRs
+- Edge network for global performance
+- Custom domain: solomonakor.dev
+
+## What's Next
+
+Planned additions:
+- Newsletter subscription
+- Comments system (possibly Giscus)
+- Portfolio project filtering
+- Dark/light mode image variants
+- Reading progress indicator for long articles

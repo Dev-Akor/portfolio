@@ -1,0 +1,96 @@
+---
+title: Smart Queue Management System
+description: A real-time queue management system for businesses to streamline customer flow, reduce wait times, and improve service delivery.
+date: 2024-02-01
+technologies: ["Next.js", "TypeScript", "Node.js", "WebSocket", "PostgreSQL", "Tailwind CSS", "Prisma"]
+status: active
+featured: true
+---
+
+## Overview
+
+The Smart Queue Management System is a web-based application designed to help businesses manage customer queues efficiently. It provides a real-time dashboard for staff and a customer-facing display system.
+
+## Problem Statement
+
+In Nigeria, long queues are a daily reality at banks, government offices, hospitals, and service centers. The problem isn't always a shortage of staff — it's poor queue management:
+
+- Customers don't know their position or estimated wait time
+- Staff can't see the full picture of queue status
+- No data to optimize staffing and service delivery
+
+## Solution
+
+A digital queue system that:
+
+1. **Customer registration**: Customers get a numbered ticket via SMS, kiosk, or QR code
+2. **Real-time updates**: Display boards show current serving numbers and estimated wait times
+3. **Staff dashboard**: Agents see their queue, call next customer with one click
+4. **Analytics**: Managers see real-time and historical data on wait times, service times, and throughput
+
+## Technical Architecture
+
+### Frontend
+- **Next.js 14** with App Router
+- **WebSocket** (Socket.io) for real-time updates
+- **Tailwind CSS** for responsive design
+
+### Backend
+- **Node.js** with Express
+- **PostgreSQL** with Prisma ORM
+- **Redis** for session management and pub/sub
+- **Socket.io** server for WebSocket connections
+
+### Queue Logic
+
+```typescript
+interface QueueTicket {
+  id: string
+  number: number
+  serviceType: string
+  issuedAt: Date
+  calledAt?: Date
+  completedAt?: Date
+  status: 'waiting' | 'called' | 'serving' | 'done' | 'no-show'
+}
+
+class QueueService {
+  async issueTicket(serviceType: string): Promise<QueueTicket> {
+    const lastNumber = await this.getLastTicketNumber(serviceType)
+    const ticket = await this.db.ticket.create({
+      data: {
+        number: lastNumber + 1,
+        serviceType,
+        status: 'waiting',
+      }
+    })
+    await this.notifyClients({ type: 'TICKET_ISSUED', ticket })
+    return ticket
+  }
+
+  async callNext(agentId: string): Promise<QueueTicket | null> {
+    const next = await this.db.ticket.findFirst({
+      where: { status: 'waiting' },
+      orderBy: { number: 'asc' },
+    })
+    if (!next) return null
+
+    const updated = await this.db.ticket.update({
+      where: { id: next.id },
+      data: { status: 'called', calledAt: new Date(), agentId }
+    })
+    await this.notifyClients({ type: 'CUSTOMER_CALLED', ticket: updated })
+    return updated
+  }
+}
+```
+
+## Current Status
+
+The project is in active development. Current milestone: completing the staff dashboard and testing WebSocket reliability under concurrent load.
+
+## Lessons Learned
+
+Building real-time systems is significantly more complex than request-response patterns. Managing state consistency between server, multiple browser clients, and display boards requires careful architectural decisions.
+
+Next steps include multi-branch support and a mobile app for customers to track their position remotely.

@@ -1,0 +1,136 @@
+﻿---
+title: "Getting Started with Next.js 14 App Router"
+description: "A practical guide to building modern web applications with Next.js 14's App Router, Server Components, and the latest React patterns."
+date: 2024-03-15
+category: Tech
+tags: ["Next.js", "React", "TypeScript", "Web Development"]
+author: Solomon Akor
+featured: true
+---
+
+Next.js 14 brings significant improvements to the developer experience with the App Router, React Server Components, and improved performance. In this guide, I'll walk you through building a production-ready application from scratch.
+
+## What's New in Next.js 14
+
+The App Router, introduced in Next.js 13 and stabilized in 14, represents a fundamental shift in how we build React applications:
+
+- **React Server Components** by default
+- **Streaming** with Suspense
+- **Nested layouts** for better code organization
+- **Server Actions** for form handling
+- **Improved caching** with fine-grained control
+
+## Setting Up Your Project
+
+Start by creating a new Next.js 14 project:
+
+```bash
+npx create-next-app@14 my-app --typescript --tailwind --app
+cd my-app
+npm run dev
+```
+
+## Understanding the App Router
+
+The App Router uses a file-system based routing approach. Every folder in the `app` directory that contains a `page.tsx` file becomes a route.
+
+```
+app/
+├── layout.tsx       # Root layout (always rendered)
+├── page.tsx         # Home page: /
+├── about/
+│   └── page.tsx     # About page: /about
+└── blog/
+    ├── page.tsx     # Blog index: /blog
+    └── [slug]/
+        └── page.tsx # Blog post: /blog/my-post
+```
+
+## React Server Components
+
+By default, all components in the App Router are Server Components. They run on the server and can directly access databases, file systems, and APIs without client-side overhead.
+
+```tsx
+// app/blog/page.tsx - This runs on the server
+import { getAllPosts } from '@/lib/posts'
+
+export default async function BlogPage() {
+  // Direct data fetching — no useEffect needed
+  const posts = await getAllPosts()
+
+  return (
+    <div>
+      {posts.map(post => (
+        <article key={post.id}>{post.title}</article>
+      ))}
+    </div>
+  )
+}
+```
+
+## When to Use Client Components
+
+Add `'use client'` only when you need:
+- Browser APIs (localStorage, window)
+- Event listeners
+- React hooks (useState, useEffect)
+- Client-side interactivity
+
+```tsx
+'use client'
+
+import { useState } from 'react'
+
+export function Counter() {
+  const [count, setCount] = useState(0)
+  return (
+    <button onClick={() => setCount(c => c + 1)}>
+      Count: {count}
+    </button>
+  )
+}
+```
+
+## Nested Layouts
+
+Layouts are a powerful feature that let you share UI across routes without re-rendering:
+
+```tsx
+// app/blog/layout.tsx
+export default function BlogLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <div className="max-w-4xl mx-auto">
+      <nav>{/* Blog navigation */}</nav>
+      {children}
+    </div>
+  )
+}
+```
+
+## Metadata API
+
+Next.js 14 provides a powerful metadata API for SEO:
+
+```tsx
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'My App',
+  description: 'Built with Next.js 14',
+  openGraph: {
+    title: 'My App',
+    description: 'Built with Next.js 14',
+    images: [{ url: '/og-image.png' }],
+  },
+}
+```
+
+## Conclusion
+
+Next.js 14's App Router is a significant improvement in developer experience and performance. The shift to Server Components by default means better performance out of the box, while the flexibility of Client Components ensures you can still build rich interactive UIs.
+
+Start building with it today — the learning curve is worth it.

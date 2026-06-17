@@ -1,0 +1,174 @@
+﻿---
+title: "TypeScript Tips That Actually Matter for Beginners"
+description: "Practical TypeScript patterns I use every day — beyond the basics. No theory, just things that make your code safer and your IDE more helpful."
+date: 2024-04-05
+category: Tech
+tags: ["TypeScript", "JavaScript", "Web Development", "Programming"]
+author: Solomon Akor
+---
+
+I was a JavaScript developer who avoided TypeScript for too long. When I finally committed to it, I spent months learning patterns the hard way. These are the ones I wish someone had shown me from the start.
+
+## 1. Use `type` for Unions, `interface` for Objects
+
+The debate between `type` and `interface` goes on forever. Here's the simple rule I follow:
+
+```typescript
+// Use `interface` for objects you might extend
+interface User {
+  id: string
+  name: string
+  email: string
+}
+
+interface AdminUser extends User {
+  permissions: string[]
+}
+
+// Use `type` for unions, intersections, and aliases
+type Status = 'active' | 'inactive' | 'pending'
+type ID = string | number
+type AdminOrUser = AdminUser | User
+```
+
+## 2. Discriminated Unions are Underrated
+
+This pattern eliminates entire categories of runtime errors:
+
+```typescript
+type ApiResponse<T> =
+  | { success: true; data: T }
+  | { success: false; error: string }
+
+async function fetchUser(id: string): Promise<ApiResponse<User>> {
+  try {
+    const user = await db.users.findById(id)
+    return { success: true, data: user }
+  } catch (err) {
+    return { success: false, error: 'User not found' }
+  }
+}
+
+// Now TypeScript knows exactly what's available
+const result = await fetchUser('123')
+if (result.success) {
+  console.log(result.data.name) // TypeScript knows `data` exists
+} else {
+  console.log(result.error) // TypeScript knows `error` exists
+}
+```
+
+## 3. `as const` for Read-only Tuples and Objects
+
+```typescript
+// Without `as const` — TypeScript infers broad types
+const SIZES = ['sm', 'md', 'lg']
+// Type: string[]  ← useless for autocomplete
+
+// With `as const` — TypeScript infers exact literal types
+const SIZES = ['sm', 'md', 'lg'] as const
+// Type: readonly ["sm", "md", "lg"]  ← much better!
+
+type Size = typeof SIZES[number] // "sm" | "md" | "lg"
+
+function getSize(size: Size) { /* ... */ }
+getSize('xl') // TypeScript error! ✓
+```
+
+## 4. Utility Types You Should Know
+
+```typescript
+// Pick — select specific properties
+type UserPreview = Pick<User, 'id' | 'name'>
+
+// Omit — exclude specific properties
+type CreateUserInput = Omit<User, 'id' | 'createdAt'>
+
+// Partial — make all properties optional
+type UpdateUserInput = Partial<User>
+
+// Required — make all properties required
+type FullUser = Required<User>
+
+// Record — typed key-value pairs
+type UserMap = Record<string, User>
+
+// ReturnType — extract function return type
+async function getUser() { /* ... */ return user }
+type GetUserReturn = Awaited<ReturnType<typeof getUser>>
+```
+
+## 5. Generic Constraints
+
+Don't use `any`. Use generics with constraints instead:
+
+```typescript
+// ❌ Any destroys type safety
+function first(arr: any[]): any {
+  return arr[0]
+}
+
+// ✓ Generic preserves type information
+function first<T>(arr: T[]): T | undefined {
+  return arr[0]
+}
+
+const num = first([1, 2, 3]) // type: number | undefined
+const str = first(['a', 'b']) // type: string | undefined
+
+// With constraints — T must have an `id` property
+function findById<T extends { id: string }>(
+  items: T[],
+  id: string
+): T | undefined {
+  return items.find(item => item.id === id)
+}
+```
+
+## 6. Type Guards
+
+```typescript
+// Custom type guard
+function isUser(value: unknown): value is User {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    'id' in value &&
+    'name' in value &&
+    'email' in value
+  )
+}
+
+// Usage
+const data: unknown = await fetch('/api/user').then(r => r.json())
+if (isUser(data)) {
+  console.log(data.name) // TypeScript knows this is a User
+}
+```
+
+## 7. Don't Over-type — Let TypeScript Infer
+
+One of my early mistakes was annotating everything:
+
+```typescript
+// ❌ Unnecessary — TypeScript already knows the type
+const name: string = 'Solomon Akor'
+const count: number = 42
+const isActive: boolean = true
+
+// ✓ Let TypeScript infer
+const name = 'Solomon Akor' // TypeScript: string
+const count = 42           // TypeScript: number
+const isActive = true      // TypeScript: boolean
+```
+
+Annotate when:
+- TypeScript can't infer (function parameters)
+- You want a wider/narrower type than what TypeScript infers
+- The inferred type is wrong
+
+## The Bottom Line
+
+TypeScript's value is proportional to how seriously you take it. Casting to `any` everywhere defeats the purpose. The patterns above — especially discriminated unions and utility types — will make your code dramatically safer with minimal friction.
+
+Start with `strict: true` in your `tsconfig.json` and fix the errors. You'll write better JavaScript from day one.
