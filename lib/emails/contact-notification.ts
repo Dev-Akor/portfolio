@@ -208,7 +208,7 @@ export function contactNotificationHtml(data: ContactNotificationData): string {
                       </tr>
                       <tr>
                         <td style="padding-top:4px;padding-right:12px;">
-                          <a href="mailto:akorsolomon.dev@gmail.com" style="color:#93c5fd;font-size:12px;text-decoration:none;">&#9993; akorsolomon.dev@gmail.com</a>
+                          <a href="mailto:hello@solomonakor.dev" style="color:#93c5fd;font-size:12px;text-decoration:none;">&#9993; hello@solomonakor.dev</a>
                         </td>
                         <td style="padding-top:4px;">
                           <a href="https://wa.me/2349064817484" style="color:#93c5fd;font-size:12px;text-decoration:none;">&#128241; +234 906 481 7484</a>

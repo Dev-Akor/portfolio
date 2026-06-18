@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
 
     if (notifFailed) {
       return NextResponse.json(
-        { success: false, message: 'Failed to send message. Please email directly at akorsolomon.dev@gmail.com' },
+        { success: false, message: 'Failed to send message. Please email directly at hello@solomonakor.dev' },
         { status: 500 }
       )
     }
@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
     }
     console.error('[contact] unexpected error:', err)
     return NextResponse.json(
-      { success: false, message: 'Failed to send message. Please email directly at akorsolomon.dev@gmail.com' },
+      { success: false, message: 'Failed to send message. Please email directly at hello@solomonakor.dev' },
       { status: 500 }
     )
   }

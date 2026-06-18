@@ -16,9 +16,15 @@ export const metadata: Metadata = createMetadata({
 const contactInfo = [
   {
     icon: HiEnvelope,
-    label: 'Email',
+    label: 'General',
     value: siteConfig.email,
     href: `mailto:${siteConfig.email}`,
+  },
+  {
+    icon: HiEnvelope,
+    label: 'Business',
+    value: siteConfig.workEmail,
+    href: `mailto:${siteConfig.workEmail}`,
   },
   {
     icon: FaWhatsapp,
