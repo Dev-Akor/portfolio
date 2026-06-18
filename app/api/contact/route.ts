@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-
-export const dynamic = 'force-dynamic'
 import { z } from 'zod'
 import { Resend } from 'resend'
 import {
@@ -11,6 +9,8 @@ import {
   autoResponseHtml,
   autoResponseText,
 } from '@/lib/emails/auto-response'
+
+export const dynamic = 'force-dynamic'
 
 const schema = z.object({
   name: z.string().min(2).max(100),
@@ -31,8 +31,7 @@ export async function POST(request: NextRequest) {
     const receivedAt = new Date()
 
     // Send both emails in parallel
-    const [notification, autoReply] = await Promise.allSettled([
-      // 1 — Notification to Solomon
+    const [notificationResult, autoReplyResult] = await Promise.allSettled([
       resend.emails.send({
         from: FROM_SENDER,
         to: CONTACT_EMAIL,
@@ -41,8 +40,6 @@ export async function POST(request: NextRequest) {
         html: contactNotificationHtml({ ...data, receivedAt }),
         text: contactNotificationText({ ...data, receivedAt }),
       }),
-
-      // 2 — Auto-response to visitor
       resend.emails.send({
         from: FROM_SENDER,
         to: data.email,
@@ -53,20 +50,34 @@ export async function POST(request: NextRequest) {
       }),
     ])
 
-    if (notification.status === 'rejected') {
-      console.error('Notification email failed:', notification.reason)
-    }
-    if (autoReply.status === 'rejected') {
-      console.error('Auto-response email failed:', autoReply.reason)
+    // Resend SDK resolves even on failure — check the error property too
+    const notifFailed =
+      notificationResult.status === 'rejected' ||
+      (notificationResult.status === 'fulfilled' && notificationResult.value.error)
+
+    const replyFailed =
+      autoReplyResult.status === 'rejected' ||
+      (autoReplyResult.status === 'fulfilled' && autoReplyResult.value.error)
+
+    if (notifFailed) {
+      const reason =
+        notificationResult.status === 'rejected'
+          ? notificationResult.reason
+          : notificationResult.value.error
+      console.error('[contact] notification failed:', JSON.stringify(reason))
     }
 
-    // Return success even if auto-reply failed — the main notification is what matters
-    if (notification.status === 'rejected') {
+    if (replyFailed) {
+      const reason =
+        autoReplyResult.status === 'rejected'
+          ? autoReplyResult.reason
+          : autoReplyResult.value.error
+      console.error('[contact] auto-reply failed:', JSON.stringify(reason))
+    }
+
+    if (notifFailed) {
       return NextResponse.json(
-        {
-          success: false,
-          message: 'Failed to send message. Please email directly at akorsolomon.dev@gmail.com',
-        },
+        { success: false, message: 'Failed to send message. Please email directly at akorsolomon.dev@gmail.com' },
         { status: 500 }
       )
     }
@@ -82,13 +93,9 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       )
     }
-
-    console.error('Contact form error:', err)
+    console.error('[contact] unexpected error:', err)
     return NextResponse.json(
-      {
-        success: false,
-        message: 'Failed to send message. Please email directly at akorsolomon.dev@gmail.com',
-      },
+      { success: false, message: 'Failed to send message. Please email directly at akorsolomon.dev@gmail.com' },
       { status: 500 }
     )
   }
