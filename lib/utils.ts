@@ -55,6 +55,10 @@ export const siteConfig = {
     // CAC business name registration
     registration: 'BN 9639007',
   },
+  maldra: {
+    name: 'Maldra Limited',
+    rc: 'RC 9685788',
+  },
   kira: {
     name: 'Kira Scales Limited',
     rc: 'RC 8223128',

@@ -74,9 +74,9 @@ const companies = [
     cta: 'See our work',
   },
   {
-    name: 'Maldra Limited',
+    name: siteConfig.maldra.name,
     kind: 'SaaS',
-    registration: null,
+    registration: siteConfig.maldra.rc,
     description:
       'Operates Maldra, the offline-first business-management platform for African SMEs, and the Maldra Invoice & Quote Maker. Built by AkorLabs Technologies.',
     href: '/projects/maldra-business-app',
