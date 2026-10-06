@@ -46,7 +46,7 @@ export function Navbar() {
       <nav className="container-custom" aria-label="Main navigation">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" aria-label="AkorLabs Technologies — home">
+          <Link href="/" aria-label="AkorLabs Technologies home page">
             <Logo />
           </Link>
 

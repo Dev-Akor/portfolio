@@ -70,7 +70,7 @@ export function ContactForm() {
         <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Message Sent!</h3>
         <p className="text-gray-600 dark:text-gray-400 max-w-sm leading-relaxed">
           Thank you for reaching out. Your message has been received and a confirmation
-          has been sent to your email. I&apos;ll be in touch within 24–48 hours.
+          has been sent to your email. We&apos;ll be in touch within 24 to 48 hours.
         </p>
         <button
           onClick={() => setStatus('idle')}

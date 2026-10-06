@@ -9,7 +9,7 @@ export async function GET() {
     .sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)))
 
   const feed = new Feed({
-    title: `${siteConfig.name} — Blog`,
+    title: `${siteConfig.name} Blog`,
     description: siteConfig.description,
     id: siteConfig.url,
     link: siteConfig.url,

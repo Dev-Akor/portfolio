@@ -39,7 +39,7 @@ export function contactNotificationHtml(data: ContactNotificationData): string {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>New Contact Message — ${SITE_HOST}</title>
+  <title>New Contact Message from ${SITE_HOST}</title>
   <style>
     @media only screen and (max-width: 600px) {
       .wrapper { padding: 12px !important; }
@@ -198,7 +198,7 @@ export function contactNotificationHtml(data: ContactNotificationData): string {
                     <div style="color:#f9fafb;font-size:15px;font-weight:700;margin-bottom:2px;">Solomon Akor</div>
                     <div style="color:#9ca3af;font-size:12px;line-height:1.6;margin-bottom:12px;">
                       Founder &amp; Lead Engineer&nbsp;&#124;&nbsp;AkorLabs Technologies<br />
-                      Co-Founder, Kira Scales Limited
+                      Co-Founder &amp; Managing Director, Kira Scales Limited
                     </div>
                     <table cellpadding="0" cellspacing="0" border="0">
                       <tr>
@@ -211,7 +211,7 @@ export function contactNotificationHtml(data: ContactNotificationData): string {
                       </tr>
                       <tr>
                         <td style="padding-top:4px;padding-right:12px;">
-                          <a href="mailto:hello@solomonakor.dev" style="color:#93c5fd;font-size:12px;text-decoration:none;">&#9993; hello@solomonakor.dev</a>
+                          <a href="mailto:${siteConfig.email}" style="color:#93c5fd;font-size:12px;text-decoration:none;">&#9993; ${siteConfig.email}</a>
                         </td>
                         <td style="padding-top:4px;">
                           <a href="https://wa.me/2349064817484" style="color:#93c5fd;font-size:12px;text-decoration:none;">&#128241; +234 906 481 7484</a>
@@ -245,7 +245,7 @@ export function contactNotificationText(data: ContactNotificationData): string {
     weekday: 'long', year: 'numeric', month: 'long',
     day: 'numeric', hour: '2-digit', minute: '2-digit',
   })
-  return `NEW CONTACT FORM MESSAGE — ${SITE_HOST}
+  return `NEW CONTACT FORM MESSAGE FROM ${SITE_HOST}
 ==========================================
 
 From:     ${data.name}
@@ -261,10 +261,9 @@ ${data.message}
 Reply to: ${data.email}
 Website:  ${SITE_URL}
 
-—
 Solomon Akor
 Founder & Lead Engineer | AkorLabs Technologies
-Co-Founder, Kira Scales Limited
+Co-Founder & Managing Director, Kira Scales Limited
 ${SITE_URL}
 `
 }

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { Resend } from 'resend'
+import { siteConfig } from '@/lib/utils'
 import {
   contactNotificationHtml,
   contactNotificationText,
@@ -20,7 +21,7 @@ const schema = z.object({
 })
 
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL ?? 'akorsolomon.dev@gmail.com'
-// Switch to 'Solomon Akor <noreply@solomonakor.dev>' once domain is verified in Resend dashboard
+// Set EMAIL_FROM to 'AkorLabs Technologies <noreply@akorlabs.com>' once akorlabs.com is verified in Resend
 const FROM_SENDER = process.env.EMAIL_FROM ?? 'Solomon Akor <onboarding@resend.dev>'
 
 export async function POST(request: NextRequest) {
@@ -33,7 +34,7 @@ export async function POST(request: NextRequest) {
     if (!process.env.RESEND_API_KEY) {
       console.error('[contact] RESEND_API_KEY is not set')
       return NextResponse.json(
-        { success: false, message: 'Messaging is temporarily unavailable. Please email hello@solomonakor.dev' },
+        { success: false, message: `Messaging is temporarily unavailable. Please email ${siteConfig.email}` },
         { status: 503 }
       )
     }
@@ -45,7 +46,7 @@ export async function POST(request: NextRequest) {
         from: FROM_SENDER,
         to: CONTACT_EMAIL,
         replyTo: data.email,
-        subject: `New message: ${data.subject} — from ${data.name}`,
+        subject: `New message from ${data.name}: ${data.subject}`,
         html: contactNotificationHtml({ ...data, receivedAt }),
         text: contactNotificationText({ ...data, receivedAt }),
       }),
@@ -59,7 +60,7 @@ export async function POST(request: NextRequest) {
       }),
     ])
 
-    // Resend SDK resolves even on failure — check the error property too
+    // Resend SDK resolves even on failure, so check the error property too
     const notifFailed =
       notificationResult.status === 'rejected' ||
       (notificationResult.status === 'fulfilled' && notificationResult.value.error)
@@ -86,13 +87,13 @@ export async function POST(request: NextRequest) {
 
     if (notifFailed) {
       return NextResponse.json(
-        { success: false, message: 'Failed to send message. Please email directly at hello@solomonakor.dev' },
+        { success: false, message: `Failed to send message. Please email directly at ${siteConfig.email}` },
         { status: 500 }
       )
     }
 
     return NextResponse.json(
-      { success: true, message: "Message sent. I'll be in touch within 24–48 hours." },
+      { success: true, message: "Message sent. We'll be in touch within 24 to 48 hours." },
       { status: 200 }
     )
   } catch (err) {
@@ -104,7 +105,7 @@ export async function POST(request: NextRequest) {
     }
     console.error('[contact] unexpected error:', err)
     return NextResponse.json(
-      { success: false, message: 'Failed to send message. Please email directly at hello@solomonakor.dev' },
+      { success: false, message: `Failed to send message. Please email directly at ${siteConfig.email}` },
       { status: 500 }
     )
   }

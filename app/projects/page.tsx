@@ -9,7 +9,7 @@ import { Reveal } from '@/components/ui/Reveal'
 export const metadata: Metadata = createMetadata({
   title: 'Projects',
   description:
-    'Case studies of production software built by Solomon Akor and AkorLabs Technologies — an offline-first POS platform, an invoicing app, a logistics dispatch system, an e-commerce CMS and more.',
+    'Case studies of production software built by AkorLabs Technologies: an offline-first POS platform, an invoicing app, a logistics dispatch system, an e-commerce CMS and more.',
   url: '/projects',
 })
 

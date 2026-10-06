@@ -1,6 +1,6 @@
 ---
 title: "TypeScript Tips That Actually Matter for Beginners"
-description: "Practical TypeScript patterns I use every day — beyond the basics. No theory, just things that make your code safer and your IDE more helpful."
+description: "Practical TypeScript patterns I use every day, beyond the basics. No theory, just things that make your code safer and your IDE more helpful."
 date: 2024-04-05
 category: Tech
 tags: ["TypeScript", "JavaScript", "Web Development", "Programming"]
@@ -61,11 +61,11 @@ if (result.success) {
 ## 3. `as const` for Read-only Tuples and Objects
 
 ```typescript
-// Without `as const` — TypeScript infers broad types
+// Without `as const`, TypeScript infers broad types
 const SIZES = ['sm', 'md', 'lg']
 // Type: string[]  ← useless for autocomplete
 
-// With `as const` — TypeScript infers exact literal types
+// With `as const`, TypeScript infers exact literal types
 const SIZES = ['sm', 'md', 'lg'] as const
 // Type: readonly ["sm", "md", "lg"]  ← much better!
 
@@ -78,22 +78,22 @@ getSize('xl') // TypeScript error! ✓
 ## 4. Utility Types You Should Know
 
 ```typescript
-// Pick — select specific properties
+// Pick: select specific properties
 type UserPreview = Pick<User, 'id' | 'name'>
 
-// Omit — exclude specific properties
+// Omit: exclude specific properties
 type CreateUserInput = Omit<User, 'id' | 'createdAt'>
 
-// Partial — make all properties optional
+// Partial: make all properties optional
 type UpdateUserInput = Partial<User>
 
-// Required — make all properties required
+// Required: make all properties required
 type FullUser = Required<User>
 
-// Record — typed key-value pairs
+// Record: typed key-value pairs
 type UserMap = Record<string, User>
 
-// ReturnType — extract function return type
+// ReturnType: extract function return type
 async function getUser() { /* ... */ return user }
 type GetUserReturn = Awaited<ReturnType<typeof getUser>>
 ```
@@ -116,7 +116,7 @@ function first<T>(arr: T[]): T | undefined {
 const num = first([1, 2, 3]) // type: number | undefined
 const str = first(['a', 'b']) // type: string | undefined
 
-// With constraints — T must have an `id` property
+// With constraints, T must have an `id` property
 function findById<T extends { id: string }>(
   items: T[],
   id: string
@@ -146,12 +146,12 @@ if (isUser(data)) {
 }
 ```
 
-## 7. Don't Over-type — Let TypeScript Infer
+## 7. Don't Over-type, Let TypeScript Infer
 
 One of my early mistakes was annotating everything:
 
 ```typescript
-// ❌ Unnecessary — TypeScript already knows the type
+// ❌ Unnecessary: TypeScript already knows the type
 const name: string = 'Solomon Akor'
 const count: number = 42
 const isActive: boolean = true
@@ -169,6 +169,6 @@ Annotate when:
 
 ## The Bottom Line
 
-TypeScript's value is proportional to how seriously you take it. Casting to `any` everywhere defeats the purpose. The patterns above — especially discriminated unions and utility types — will make your code dramatically safer with minimal friction.
+TypeScript's value is proportional to how seriously you take it. Casting to `any` everywhere defeats the purpose. The patterns above (especially discriminated unions and utility types) will make your code dramatically safer with minimal friction.
 
 Start with `strict: true` in your `tsconfig.json` and fix the errors. You'll write better JavaScript from day one.

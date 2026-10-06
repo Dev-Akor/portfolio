@@ -55,7 +55,7 @@ By default, all components in the App Router are Server Components. They run on 
 import { getAllPosts } from '@/lib/posts'
 
 export default async function BlogPage() {
-  // Direct data fetching — no useEffect needed
+  // Direct data fetching, no useEffect needed
   const posts = await getAllPosts()
 
   return (
@@ -133,4 +133,4 @@ export const metadata: Metadata = {
 
 Next.js 14's App Router is a significant improvement in developer experience and performance. The shift to Server Components by default means better performance out of the box, while the flexibility of Client Components ensures you can still build rich interactive UIs.
 
-Start building with it today — the learning curve is worth it.
+Start building with it today. The learning curve is worth it.

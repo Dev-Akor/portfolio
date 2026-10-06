@@ -1,13 +1,13 @@
 ---
 title: Logistics & Dispatch Platform
 shortTitle: Dispatch Platform
-description: A complete courier platform for a Nigerian logistics company — customers book and track shipments, drivers deliver with photo proof of delivery and live GPS, and operations staff approve, price and dispatch from a real-time web dashboard.
+description: A complete courier platform for a Nigerian logistics company. Customers book and track shipments, drivers deliver with photo proof of delivery and live GPS, and operations staff approve, price and dispatch from a real-time web dashboard.
 date: 2026-07-01
 category: Logistics
 status: live
 visibility: confidential
 role: Lead engineer & solutions architect (sole engineer)
-timeline: Jul 2026 — phase 1 shipped in two weeks
+timeline: Jul 2026 (phase 1 shipped in two weeks)
 client: Nigerian courier & logistics company (under NDA)
 platforms: ["Android", "Web"]
 featured: true
@@ -63,11 +63,11 @@ The brief was a digital chain of custody: every shipment, from booking to delive
 ## Engineering challenges
 
 <Challenge n={1} title="A shipment state machine nobody can bypass">
-  Shipments move through 16 states — draft, pending approval, price offer, assigned, in transit, delivered, returned and more — with explicit forbidden transitions. Rather than trusting the app, the rules live in **PostgreSQL functions and triggers**. Each transition is atomic and writes an immutable event and an audit row. New states were later added with purely additive migrations.
+  Shipments move through 16 states (draft, pending approval, price offer, assigned, in transit, delivered, returned and more) with explicit forbidden transitions. Rather than trusting the app, the rules live in **PostgreSQL functions and triggers**. Each transition is atomic and writes an immutable event and an audit row. New states were later added with purely additive migrations.
 </Challenge>
 
 <Challenge n={2} title="Identity and onboarding edge cases">
-  A custom auth hook adds role claims to every login token and refuses login when no profile exists. That turned out to fire during email-confirmation sign-up too, which would have locked out every new customer. The fix — documented in an architecture decision record — was an explicit "unregistered" state with a complete-profile flow, followed by invite-based onboarding for drivers and staff.
+  A custom auth hook adds role claims to every login token and refuses login when no profile exists. That turned out to fire during email-confirmation sign-up too, which would have locked out every new customer. The fix, documented in an architecture decision record, was an explicit "unregistered" state with a complete-profile flow, followed by invite-based onboarding for drivers and staff.
 </Challenge>
 
 <Challenge n={3} title="Users stuck on old versions of the web app">
@@ -80,4 +80,4 @@ The brief was a digital chain of custody: every shipment, from booking to delive
 
 ## Results
 
-Phase 1 went from first commit to production in about two weeks and is live, with the Android app distributed directly to drivers and customers. The documentation-first approach — PRD, domain model, state machines, sequence diagrams and test plans before code — is what made that pace possible without cutting corners.
+Phase 1 went from first commit to production in about two weeks and is live, with the Android app distributed directly to drivers and customers. The documentation-first approach (PRD, domain model, state machines, sequence diagrams and test plans before code) is what made that pace possible without cutting corners.

@@ -9,7 +9,7 @@ import {
 import { siteConfig } from '@/lib/utils'
 
 export const metadata: Metadata = createMetadata({
-  title: 'Kira Scales Limited — Industrial Weighing Solutions Nigeria',
+  title: 'Kira Scales Limited: Industrial Weighing Solutions in Nigeria',
   description:
     'Kira Scales Limited supplies, installs, calibrates, and maintains weighbridges and industrial scales across Nigeria. Serving quarries, factories, farms, and logistics companies.',
   url: '/kira',
@@ -92,7 +92,7 @@ const products = [
   {
     name: 'Weighbridges',
     description: 'Pit and pitless weighbridges from 20 to 150 tonnes capacity',
-    specs: ['20T – 150T capacity', 'Digital load cells', 'OIML certified', 'Printer integration'],
+    specs: ['20T to 150T capacity', 'Digital load cells', 'OIML certified', 'Printer integration'],
   },
   {
     name: 'Truck Scales',
@@ -166,7 +166,7 @@ export default function KiraPage() {
           <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/3]">
             <Image
               src="/images/solomon-akor-site.jpg"
-              alt="Solomon Akor on-site in safety gear at a weighbridge installation — Kira Scales Limited operations"
+              alt="Solomon Akor on-site in safety gear at a Kira Scales Limited weighbridge installation"
               fill
               priority
               className="object-cover"
@@ -175,7 +175,7 @@ export default function KiraPage() {
             <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent" />
             <div className="absolute bottom-4 left-4 right-4">
               <p className="text-white font-semibold text-sm">Solomon Akor</p>
-              <p className="text-white/80 text-xs">Co-Founder &amp; Managing Director — Kira Scales Limited</p>
+              <p className="text-white/80 text-xs">Co-Founder &amp; Managing Director, Kira Scales Limited</p>
             </div>
           </div>
         </div>
@@ -209,7 +209,7 @@ export default function KiraPage() {
             Our Services
           </h2>
           <p className="text-center text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-12">
-            End-to-end weighing solutions — from supply and installation to calibration and ongoing support.
+            End-to-end weighing solutions, from supply and installation to calibration and ongoing support.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map(({ icon: Icon, title, description }) => (

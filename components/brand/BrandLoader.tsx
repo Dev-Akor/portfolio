@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils'
 import { markCells } from './Logo'
 
-// The A lights up first, then the red L — same order as the brand animation
+// The A lights up first, then the red L, in the same order as the brand animation
 const ORDER = ['0-1', '0-2', '1-3', '3-3', '3-0', '0-0', '1-0', '2-0', '2-1', '2-2', '2-3']
 
 /** Animated AkorLabs mark used for the splash and route loading screens. */

@@ -132,7 +132,7 @@ export default function ContactPage() {
             <div className="card p-5 bg-primary-50 dark:bg-primary-900/10 border-primary-100 dark:border-primary-900/30">
               <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
                 <span className="font-semibold">Response time:</span> we typically respond within
-                24–48 hours on business days.
+                24 to 48 hours on business days.
               </p>
             </div>
           </div>

@@ -95,43 +95,43 @@ const companies = [
 const journey = [
   {
     icon: HiAcademicCap,
-    period: '2016–2020',
+    period: '2016 to 2020',
     title: 'Computer Science degree',
     description:
       'A foundation in algorithms, data structures, software engineering and system design.',
   },
   {
     icon: HiBriefcase,
-    period: '2020–2021',
+    period: '2020 to 2021',
     title: 'Warehouse & commodity operations',
     description:
-      'Managed cocoa warehouse operations in West Africa, with first-hand exposure to logistics, measurement and supply chains — and their inefficiencies.',
+      'Managed cocoa warehouse operations in West Africa, with first-hand exposure to logistics, measurement and supply chains, and their inefficiencies.',
   },
   {
     icon: HiGlobeAlt,
-    period: '2021–2022',
+    period: '2021 to 2022',
     title: 'Weighbridge technology abroad',
     description:
       'Saw European weighbridge and industrial weighing infrastructure up close, identified an underserved market at home, and came back with a plan.',
   },
   {
     icon: HiBuildingOffice,
-    period: '2022–present',
-    title: 'Co-Founder & Managing Director — Kira Scales Limited',
+    period: '2022 to present',
+    title: 'Co-Founder & Managing Director, Kira Scales Limited',
     description:
       'Co-founded Kira Scales Limited and leads it as Managing Director: client delivery, field engineering, calibration projects and business development.',
   },
   {
     icon: HiCodeBracket,
-    period: '2023–present',
+    period: '2023 to present',
     title: 'Software engineering',
     description:
       'Turned operational experience into software: first Kira Scales’ own e-commerce platform, then production systems for retail, logistics and invoicing on web and mobile.',
   },
   {
     icon: HiRocketLaunch,
-    period: '2026–present',
-    title: 'Founder & Lead Engineer — AkorLabs Technologies',
+    period: '2026 to present',
+    title: 'Founder & Lead Engineer, AkorLabs Technologies',
     description:
       'Registered AkorLabs Technologies as the software company behind Maldra, ApplyAI and client platforms.',
   },

@@ -125,7 +125,7 @@ export function autoResponseHtml(data: AutoResponseData): string {
                             Expected Response Time
                           </div>
                           <div style="font-size:15px;font-weight:600;color:#1e3a8a;">
-                            Within 24–48 business hours
+                            Within 24 to 48 business hours
                           </div>
                         </td>
                       </tr>
@@ -171,7 +171,7 @@ export function autoResponseHtml(data: AutoResponseData): string {
               <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px;" class="btn-row">
                 <tr>
                   <td align="center" style="padding-bottom:12px;">
-                    <a href="mailto:hello@solomonakor.dev?subject=Re:%20${encodeURIComponent(data.subject)}"
+                    <a href="mailto:${siteConfig.email}?subject=Re:%20${encodeURIComponent(data.subject)}"
                        style="display:inline-block;background:#2563eb;color:#ffffff;font-size:14px;font-weight:700;
                               text-align:center;text-decoration:none;padding:14px 36px;border-radius:8px;
                               letter-spacing:0.02em;margin-right:8px;">
@@ -222,7 +222,7 @@ export function autoResponseHtml(data: AutoResponseData): string {
                     </a>
                   </td>
                   <td style="padding:4px 12px;white-space:nowrap;border-left:1px solid #374151;">
-                    <a href="mailto:hello@solomonakor.dev" style="color:#93c5fd;font-size:12px;text-decoration:none;font-weight:500;">
+                    <a href="mailto:${siteConfig.email}" style="color:#93c5fd;font-size:12px;text-decoration:none;font-weight:500;">
                       &#9993;&nbsp;Gmail
                     </a>
                   </td>
@@ -261,7 +261,7 @@ Thank you for reaching out through my website. Your message has been received su
 
 Whether your inquiry relates to software development, business operations, digital solutions, consulting, partnerships, or Kira Scales projects, I look forward to connecting with you.
 
-Expected response time: Within 24–48 business hours.
+Expected response time: Within 24 to 48 business hours.
 
 ---
 Best regards,
@@ -272,7 +272,7 @@ Co-Founder, Kira Scales Limited
 
 Website:  ${SITE_URL}
 GitHub:   https://github.com/dev-akor
-Email:    hello@solomonakor.dev
+Email:    ${siteConfig.email}
 Phone:    +234 906 481 7484
 
 ---

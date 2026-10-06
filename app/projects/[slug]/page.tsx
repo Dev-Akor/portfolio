@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!project) return {}
 
   return createMetadata({
-    title: `${project.title} — Case Study`,
+    title: `${project.title} Case Study`,
     description: project.description,
     url: project.url,
     image: project.cover,

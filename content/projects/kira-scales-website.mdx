@@ -1,13 +1,13 @@
 ---
-title: Kira Scales — E-commerce & CMS
+title: "Kira Scales: E-commerce & CMS"
 shortTitle: Kira Scales
-description: A full-stack online store and headless CMS for an industrial weighing company — Paystack checkout, proforma invoices, order tracking, a built-in CRM and newsletters, and SEO built to rank across Nigeria.
+description: "A full-stack online store and headless CMS for an industrial weighing company: Paystack checkout, proforma invoices, order tracking, a built-in CRM and newsletters, and SEO built to rank across Nigeria."
 date: 2026-05-14
 category: E-commerce
 status: live
 visibility: private
-role: Co-founder & sole engineer — design system, build, payments, SEO and deployment
-timeline: May 2026 – present
+role: "Co-founder & sole engineer: design system, build, payments, SEO and deployment"
+timeline: May 2026 to present
 company: Kira Scales Limited
 platforms: ["Web"]
 liveUrl: https://kirascales.com
@@ -24,10 +24,10 @@ metrics:
   - value: "300+"
     label: Legacy URLs redirected
   - value: "3"
-    label: Ways to buy — card, transfer, proforma
+    label: "Ways to buy: card, transfer, proforma"
 highlights:
   - Prices are always re-calculated on the server; the browser is never trusted
-  - Payment confirmation is race-safe — exactly one confirmation email, every time
+  - Payment confirmation is race-safe, with exactly one confirmation email every time
   - A CRM and newsletter system built into the CMS, with consent handling
   - Marketing staff run content and campaigns without admin access
   - Migrated from the old domain without losing search rankings
@@ -45,13 +45,13 @@ Industrial equipment is a high-value B2B purchase: buyers want a formal proforma
 
 ## What it does
 
-- **Online store** — a product catalogue with categories, a cart, and checkout by Paystack or direct bank transfer.
-- **B2B purchasing** — printable proforma invoices with per-product VAT, quote and service request forms, and order tracking.
-- **Order lifecycle** — status emails sent automatically as orders move from pending to paid to delivered; bank-transfer orders wait until staff confirm payment.
-- **CRM** — contacts are created and de-duplicated automatically from every quote, proforma, order and sign-up, each with an activity history.
-- **Newsletters** — campaigns targeted by source, tag or staff owner, test sends, and unsubscribes and bounces synced back automatically.
-- **CMS** — 14 collections with live preview, drafts, redirects, site search, a form builder, CSV import/export and a branded admin dashboard, with separate admin and marketing roles.
-- **SEO** — search-intent landing pages, city landing pages, structured data, a sitemap index and a Google Merchant Center product feed.
+- **Online store:** a product catalogue with categories, a cart, and checkout by Paystack or direct bank transfer.
+- **B2B purchasing:** printable proforma invoices with per-product VAT, quote and service request forms, and order tracking.
+- **Order lifecycle:** status emails sent automatically as orders move from pending to paid to delivered; bank-transfer orders wait until staff confirm payment.
+- **CRM:** contacts are created and de-duplicated automatically from every quote, proforma, order and sign-up, each with an activity history.
+- **Newsletters:** campaigns targeted by source, tag or staff owner, test sends, and unsubscribes and bounces synced back automatically.
+- **CMS:** 14 collections with live preview, drafts, redirects, site search, a form builder, CSV import/export and a branded admin dashboard, with separate admin and marketing roles.
+- **SEO:** search-intent landing pages, city landing pages, structured data, a sitemap index and a Google Merchant Center product feed.
 
 ## Architecture
 
@@ -68,7 +68,7 @@ Industrial equipment is a high-value B2B purchase: buyers want a formal proforma
 ## Engineering challenges
 
 <Challenge n={1} title="Trustworthy payments under a race condition">
-  The customer's browser redirect and the payment provider's webhook can both arrive at the same moment. Prices are never taken from the client — every cart line is **re-priced on the server** with the same rules as the storefront — and the amount actually paid is checked. The order moves to "paid" in a single conditional update on its current status, so exactly one caller wins and the confirmation email goes out exactly once.
+  The customer's browser redirect and the payment provider's webhook can both arrive at the same moment. Prices are never taken from the client. Every cart line is **re-priced on the server** with the same rules as the storefront, and the amount actually paid is checked. The order moves to "paid" in a single conditional update on its current status, so exactly one caller wins and the confirmation email goes out exactly once.
 </Challenge>
 
 <Challenge n={2} title="Emails lost to serverless shutdown">

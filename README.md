@@ -77,11 +77,11 @@ cp .env.local.example .env.local
 ```
 
 Key variables:
-- `NEXT_PUBLIC_GA_MEASUREMENT_ID` — Google Analytics 4 ID
-- `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` — Google Search Console
-- `NEXT_PUBLIC_CLARITY_ID` — Microsoft Clarity
-- `RESEND_API_KEY` — For contact form email sending
-- `CONTACT_EMAIL` — Email to receive contact form submissions
+- `NEXT_PUBLIC_GA_MEASUREMENT_ID`: Google Analytics 4 ID
+- `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`: Google Search Console
+- `NEXT_PUBLIC_CLARITY_ID`: Microsoft Clarity
+- `RESEND_API_KEY`: sends contact form email
+- `CONTACT_EMAIL`: inbox that receives contact form submissions
 
 ### Development
 
@@ -134,7 +134,7 @@ visibility: private       # public | private | confidential (client NDA)
 repoUrl: https://github.com/you/project   # only shown when visibility is public
 liveUrl: https://project.com
 role: Sole engineer
-timeline: Jan 2026 – present
+timeline: Jan 2026 to present
 platforms: ["Web", "Android"]
 cover: /images/projects/name/cover.webp   # optional; a generated cover is used otherwise
 featured: true            # show on the home page
@@ -162,7 +162,7 @@ Never put a private repository URL in a project file: this repo is public.
 4. Configure custom domain: `akorlabs.com`, and redirect `solomonakor.dev` to it
 5. Set `NEXT_PUBLIC_SITE_URL=https://akorlabs.com`
 
-Vercel auto-detects Next.js — no additional configuration needed.
+Vercel auto-detects Next.js, so no additional configuration is needed.
 
 ### Manual Build
 
@@ -199,4 +199,4 @@ The contact form at `/contact` validates client-side (Zod + React Hook Form) and
 
 ## License
 
-MIT — use freely for personal and commercial projects.
+MIT. Use freely for personal and commercial projects.

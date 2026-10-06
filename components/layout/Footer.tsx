@@ -45,11 +45,11 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-6 gap-8 mb-12">
           {/* Brand */}
           <div className="col-span-2">
-            <Link href="/" aria-label="AkorLabs Technologies — home" className="w-fit">
+            <Link href="/" aria-label="AkorLabs Technologies home page" className="w-fit">
               <Logo onDark />
             </Link>
             <p className="mt-4 text-sm text-gray-300 leading-relaxed">
-              We build production software for African businesses — offline-first point of sale,
+              We build production software for African businesses: offline-first point of sale,
               logistics, e-commerce and payments. Founded by Solomon Akor.
             </p>
             <div className="flex items-center gap-3 mt-4">

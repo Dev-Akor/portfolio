@@ -1,15 +1,15 @@
 ---
 title: Maldra Business App
 shortTitle: Maldra
-description: An offline-first business operating system for African SMEs — point of sale, inventory, purchasing, customers and payments that keep working when the internet doesn't, across web, Android and iOS.
+description: "An offline-first business operating system for African SMEs: point of sale, inventory, purchasing, customers and payments that keep working when the internet doesn't, across web, Android and iOS."
 date: 2026-07-01
 category: SaaS
 status: live
 visibility: private
 company: Maldra Limited
 builtBy: AkorLabs Technologies
-role: Founder & lead engineer — product, architecture, web, backend, mobile, DevOps
-timeline: Jul 2026 – present
+role: "Founder & lead engineer: product, architecture, web, backend, mobile, DevOps"
+timeline: Jul 2026 to present
 platforms: ["Web (PWA)", "Android", "iOS"]
 liveUrl: https://maldra.com
 cover: /images/projects/maldra/counter-desktop.webp
@@ -27,7 +27,7 @@ metrics:
   - value: "460+"
     label: Automated test files
 highlights:
-  - Sales made offline sync exactly once — no lost or duplicated transactions
+  - Sales made offline sync exactly once, with no lost or duplicated transactions
   - One TypeScript business core runs on the server, the web and inside the Flutter app
   - Money and stock live in append-only ledgers enforced by Postgres itself
   - Tenant isolation enforced by row-level security, tested adversarially
@@ -39,24 +39,24 @@ gallery:
     caption: Inventory with low-stock and out-of-stock insights
   - src: /images/projects/maldra/mobile.webp
     alt: Maldra mobile app in a shop owner's hand
-    caption: The Flutter mobile app — the same sale rules as the web, offline
+    caption: "The Flutter mobile app: the same sale rules as the web, offline"
 ---
 
 ## The problem
 
-Most small businesses in Nigeria run on paper, WhatsApp and spreadsheets. The point-of-sale tools that exist either need a constant internet connection or are cash-agent terminals — and connectivity in a busy market is never constant. When the network drops, the shop still has customers at the counter.
+Most small businesses in Nigeria run on paper, WhatsApp and spreadsheets. The point-of-sale tools that exist either need a constant internet connection or are cash-agent terminals, and connectivity in a busy market is never constant. When the network drops, the shop still has customers at the counter.
 
 Maldra is built for that reality: a modular business platform where the checkout (the **Counter**) keeps selling offline on a cheap Android phone or a desktop browser, and reconciles with the server *correctly* when the connection comes back.
 
 ## What it does
 
-- **Counter / POS** — barcode scanning with the device camera, multiple units per product (kg, litre, carton) with conversions, server-calculated tax, manager-approved discounts, held sales, refunds, cash sessions, Bluetooth thermal receipts or PDF, and PIN unlock that works offline.
-- **Inventory** — stock adjustments with photo evidence, transfers between locations, batch and expiry tracking, cost and profit, low-stock insights, CSV import.
-- **Purchasing** — suppliers, a purchase-order approval workflow, goods receiving and supplier balances.
-- **Customers & finance** — customer credit balances, expenses, daily sales reports and analytics dashboards.
-- **Multi-branch** — organisations → branches → locations, per-branch pricing, and owner / manager / cashier / inventory roles with device provisioning.
-- **Business websites** — a public product page for each business with WhatsApp ordering and automated custom domains.
-- **Billing** — monthly plans paid by card auto-renew, bank transfer, USSD or QR through Paystack, with a free trial.
+- **Counter / POS:** barcode scanning with the device camera, multiple units per product (kg, litre, carton) with conversions, server-calculated tax, manager-approved discounts, held sales, refunds, cash sessions, Bluetooth thermal receipts or PDF, and PIN unlock that works offline.
+- **Inventory:** stock adjustments with photo evidence, transfers between locations, batch and expiry tracking, cost and profit, low-stock insights, CSV import.
+- **Purchasing:** suppliers, a purchase-order approval workflow, goods receiving and supplier balances.
+- **Customers & finance:** customer credit balances, expenses, daily sales reports and analytics dashboards.
+- **Multi-branch:** organisations → branches → locations, per-branch pricing, and owner / manager / cashier / inventory roles with device provisioning.
+- **Business websites:** a public product page for each business with WhatsApp ordering and automated custom domains.
+- **Billing:** monthly plans paid by card auto-renew, bank transfer, USSD or QR through Paystack, with a free trial.
 
 ## Architecture
 
@@ -78,7 +78,7 @@ The codebase is a pnpm monorepo organised as ports and adapters: pure domain pac
 <Challenge n={1} title="Offline sales that sync exactly once">
   Every write on a device is recorded in a local journal and replayed to the server in order, by a per-device sequence number rather than the device clock, which can't be trusted. Batches are idempotent, so a retry after a dropped connection can never create a duplicate sale.
 
-  Only infrastructure failures are retried. Business conflicts — like selling stock another device already sold — are **surfaced to the user, never silently overwritten**. The sync path is tested against real Postgres, including several devices syncing at once and a device restarting mid-sync.
+  Only infrastructure failures are retried. Business conflicts, like selling stock another device already sold, are **surfaced to the user, never silently overwritten**. The sync path is tested against real Postgres, including several devices syncing at once and a device restarting mid-sync.
 </Challenge>
 
 <Challenge n={2} title="One business core on every platform">
@@ -100,7 +100,7 @@ The codebase is a pnpm monorepo organised as ports and adapters: pure domain pac
 </Challenge>
 
 <Challenge n={6} title="Automated custom domains">
-  A business can connect its own domain from the dashboard. Maldra checks the domain is registered, attaches it through the Vercel API, and a background worker re-checks DNS until it verifies — so typing someone else's domain never works.
+  A business can connect its own domain from the dashboard. Maldra checks the domain is registered, attaches it through the Vercel API, and a background worker re-checks DNS until it verifies, so typing someone else's domain never works.
 </Challenge>
 
 ## Results

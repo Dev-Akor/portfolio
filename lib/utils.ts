@@ -33,7 +33,7 @@ export const siteConfig = {
   name: 'AkorLabs Technologies',
   title: 'AkorLabs Technologies | Software for African Businesses',
   description:
-    'AkorLabs Technologies builds production software for African businesses — offline-first point of sale, logistics, e-commerce and payment platforms across web, Android and iOS. Founded by Solomon Akor.',
+    'AkorLabs Technologies builds production software for African businesses: offline-first point of sale, logistics, e-commerce and payment platforms across web, Android and iOS. Founded by Solomon Akor.',
   founder: {
     name: 'Solomon Akor',
     role: 'Founder & Lead Engineer',
@@ -41,8 +41,8 @@ export const siteConfig = {
   },
   url: siteUrl,
   ogImage: `${siteUrl}/images/og-image.jpg`,
-  email: 'hello@solomonakor.dev',
-  workEmail: 'work@solomonakor.dev',
+  email: 'hello@akorlabs.com',
+  workEmail: 'work@akorlabs.com',
   github: 'https://github.com/dev-akor',
   linkedin: 'https://linkedin.com/in/solomonakor',
   twitter: 'https://twitter.com/solomonakor',
