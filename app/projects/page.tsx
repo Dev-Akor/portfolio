@@ -1,112 +1,59 @@
-﻿import { Metadata } from 'next'
-import { createMetadata } from '@/lib/metadata'
-import { allProjects } from 'contentlayer/generated'
-import { compareDesc } from 'date-fns'
+import { Metadata } from 'next'
 import Link from 'next/link'
-import { FaGithub, FaArrowUpRightFromSquare } from 'react-icons/fa6'
-import { cn } from '@/lib/utils'
+import { createMetadata } from '@/lib/metadata'
+import { getProjects, getProjectCategories } from '@/lib/projects'
+import { ProjectCard } from '@/components/projects/ProjectCard'
+import { ProjectGrid } from '@/components/projects/ProjectGrid'
+import { Reveal } from '@/components/ui/Reveal'
 
 export const metadata: Metadata = createMetadata({
   title: 'Projects',
   description:
-    'Explore projects built by Solomon Akor — web applications, tools, and digital products using Next.js, TypeScript, Node.js, and more.',
+    'Case studies of production software built by Solomon Akor and AkorLabs Technologies — an offline-first POS platform, an invoicing app, a logistics dispatch system, an e-commerce CMS and more.',
   url: '/projects',
 })
 
-const statusColors: Record<string, string> = {
-  active: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-  completed: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
-  archived: 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400',
-}
-
 export default function ProjectsPage() {
-  const projects = allProjects.sort((a, b) =>
-    compareDesc(new Date(a.date), new Date(b.date))
-  )
+  const projects = getProjects()
+  const [lead, ...rest] = projects
+  const categories = getProjectCategories(rest)
 
   return (
-    <div className="section-padding">
-      <div className="container-custom">
-        {/* Header */}
-        <div className="max-w-2xl mb-16">
-          <p className="text-sm font-semibold text-primary-600 dark:text-primary-400 uppercase tracking-wider mb-3">
-            Portfolio
-          </p>
-          <h1 className="heading-xl text-gray-900 dark:text-white mb-6">Projects</h1>
-          <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
-            A collection of projects I&apos;ve built — from web applications and tools to
-            business platforms. Each one solves a real problem.
+    <div>
+      <header className="band-blue">
+        <div className="container-custom pb-28 pt-16 md:pb-32 md:pt-20">
+          <p className="eyebrow-on-dark mb-5">Our work</p>
+          <h1 className="heading-xl mb-6 max-w-3xl text-white">Production software, built end to end.</h1>
+          <p className="max-w-3xl text-lg leading-relaxed text-primary-100 md:text-xl">
+            Platforms we&apos;ve designed, built and shipped, from database schema to app store build. Most codebases
+            are private or under client NDA, so each case study explains the architecture and the hard problems
+            instead. Want to see the code?{' '}
+            <Link href="/contact?subject=Code%20walkthrough" className="font-semibold text-brand-gold hover:underline">
+              Ask for a walkthrough
+            </Link>
+            .
           </p>
         </div>
+      </header>
 
-        {projects.length === 0 ? (
-          <div className="text-center py-20 text-gray-500 dark:text-gray-400">
-            <p>Projects coming soon. Check back shortly.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {projects.map((project) => (
-              <article key={project.slug} className="card p-6 flex flex-col group">
-                <div className="flex items-start justify-between mb-5">
-                  <span className={cn('badge text-xs', statusColors[project.status ?? 'active'])}>
-                    {project.status ?? 'active'}
-                  </span>
-                  <div className="flex items-center gap-3">
-                    {project.githubUrl && (
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label="GitHub repository"
-                        className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
-                      >
-                        <FaGithub className="w-5 h-5" />
-                      </a>
-                    )}
-                    {project.liveUrl && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label="Live demo"
-                        className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
-                      >
-                        <FaArrowUpRightFromSquare className="w-4 h-4" />
-                      </a>
-                    )}
-                  </div>
-                </div>
+      <div className="relative -mt-20 pb-16 md:pb-24">
+        <div className="container-custom">
 
-                <Link href={project.url}>
-                  <h2 className="font-bold text-xl text-gray-900 dark:text-white mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                    {project.title}
-                  </h2>
-                </Link>
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-5 flex-1">
-                  {project.description}
-                </p>
+          {lead && (
+            <Reveal className="mb-16">
+              <ProjectCard project={lead} size="large" priority />
+            </Reveal>
+          )}
 
-                <div className="flex flex-wrap gap-2 mt-auto">
-                  {project.technologies.map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-2.5 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded-md"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-
-                <Link
-                  href={project.url}
-                  className="mt-5 text-sm font-medium text-primary-600 dark:text-primary-400 hover:underline"
-                >
-                  View Details →
-                </Link>
-              </article>
-            ))}
-          </div>
-        )}
+          <ProjectGrid
+            categories={categories}
+            cards={rest.map((project) => ({
+              slug: project.slug,
+              category: project.category,
+              node: <ProjectCard project={project} className="w-full" />,
+            }))}
+          />
+        </div>
       </div>
     </div>
   )

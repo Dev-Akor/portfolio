@@ -44,8 +44,10 @@ export function BlogSearch({ posts, initialCategory, initialTag }: BlogSearchPro
     })
   }, [posts, query, activeCategory, initialTag])
 
-  const featured = filtered.filter((p) => p.featured)
-  const regular = filtered.filter((p) => !p.featured)
+  // Featured posts get their own section only on the unfiltered view; otherwise everything is one grid
+  const isFiltering = Boolean(query) || activeCategory !== 'All' || Boolean(initialTag)
+  const featured = isFiltering ? [] : filtered.filter((p) => p.featured)
+  const regular = isFiltering ? filtered : filtered.filter((p) => !p.featured)
 
   return (
     <div>
@@ -143,14 +145,6 @@ export function BlogSearch({ posts, initialCategory, initialTag }: BlogSearchPro
             </div>
           )}
 
-          {/* When searching, show all results in grid */}
-          {(query || activeCategory !== 'All' || initialTag) && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {filtered.map((post) => (
-                <BlogCard key={post.slug} post={post} />
-              ))}
-            </div>
-          )}
         </div>
       )}
     </div>

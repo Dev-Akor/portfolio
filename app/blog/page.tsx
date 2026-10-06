@@ -1,4 +1,4 @@
-﻿import { Metadata } from 'next'
+import { Metadata } from 'next'
 import { createMetadata } from '@/lib/metadata'
 import { allPosts } from 'contentlayer/generated'
 import { compareDesc } from 'date-fns'

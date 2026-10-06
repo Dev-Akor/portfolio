@@ -4,8 +4,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import {
   HiTruck, HiWrenchScrewdriver, HiBuildingOffice2, HiShieldCheck,
-  HiPhone, HiArrowTopRightOnSquare,
+  HiPhone, HiArrowTopRightOnSquare, HiMapPin, HiEnvelope,
 } from 'react-icons/hi2'
+import { siteConfig } from '@/lib/utils'
 
 export const metadata: Metadata = createMetadata({
   title: 'Kira Scales Limited — Industrial Weighing Solutions Nigeria',
@@ -27,8 +28,17 @@ const kiraJsonLd = {
   url: 'https://kirascales.com',
   description:
     'Nigeria\'s trusted industrial weighing solutions provider. We supply, install, calibrate, and maintain weighbridges and industrial scales for businesses across Nigeria.',
-  founder: { '@type': 'Person', name: 'Solomon Akor', url: 'https://solomonakor.dev' },
-  location: { '@type': 'Place', name: 'Nigeria' },
+  founder: { '@type': 'Person', name: 'Solomon Akor', jobTitle: 'Co-Founder & Managing Director', url: `${siteConfig.url}/about#founder` },
+  identifier: siteConfig.kira.rc,
+  email: siteConfig.kira.email,
+  telephone: '+2348034354829',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '38 Opebi Road',
+    addressLocality: 'Ikeja',
+    addressRegion: 'Lagos',
+    addressCountry: 'NG',
+  },
   areaServed: 'Nigeria',
   serviceType: [
     'Weighbridge Installation',
@@ -50,7 +60,7 @@ const services = [
     icon: HiWrenchScrewdriver,
     title: 'Weighbridge Calibration',
     description:
-      'NAFDAC-compliant calibration services for existing weighbridges. We ensure accuracy, issue certificates, and maintain compliance with regulatory standards.',
+      'Calibration of existing weighbridges by a company certified under Weights and Measures. We verify accuracy, issue calibration certificates and keep your scale legal for trade.',
   },
   {
     icon: HiShieldCheck,
@@ -106,7 +116,7 @@ const reasons = [
   { title: 'Quality Equipment', description: 'We supply only certified equipment from reputable international manufacturers.' },
   { title: 'Professional Installation', description: 'Factory-trained technicians ensuring correct installation and commissioning.' },
   { title: 'Reliable Support', description: 'Dedicated after-sales support and maintenance service agreements.' },
-  { title: 'Regulatory Compliance', description: 'All calibrations are done to Nigerian standards and regulatory requirements.' },
+  { title: 'Certified & Pattern Approved', description: 'Certified under Weights and Measures, with pattern approval for our weighbridges.' },
   { title: 'Competitive Pricing', description: 'Cost-effective solutions without compromising on quality or service.' },
 ]
 
@@ -123,7 +133,7 @@ export default function KiraPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
           <div>
             <p className="text-sm font-semibold text-primary-600 dark:text-primary-400 uppercase tracking-wider mb-3">
-              Business Profile
+              Our companies · Industrial weighing
             </p>
             <h1 className="heading-xl text-gray-900 dark:text-white mb-6">
               Kira Scales Limited
@@ -165,7 +175,7 @@ export default function KiraPage() {
             <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent" />
             <div className="absolute bottom-4 left-4 right-4">
               <p className="text-white font-semibold text-sm">Solomon Akor</p>
-              <p className="text-white/80 text-xs">Head of Operations — Kira Scales Limited</p>
+              <p className="text-white/80 text-xs">Co-Founder &amp; Managing Director — Kira Scales Limited</p>
             </div>
           </div>
         </div>
@@ -243,6 +253,30 @@ export default function KiraPage() {
             Whether you need a new weighbridge installed, an existing one calibrated, or a
             spare parts supply, our team is ready to help.
           </p>
+          <dl className="mx-auto mb-8 grid max-w-3xl gap-4 text-left sm:grid-cols-3">
+            <div className="rounded-xl bg-white/10 p-4">
+              <dt className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary-100">
+                <HiMapPin className="h-4 w-4" aria-hidden="true" /> Head office
+              </dt>
+              <dd className="mt-1 text-sm font-medium">{siteConfig.kira.address}</dd>
+            </div>
+            <div className="rounded-xl bg-white/10 p-4">
+              <dt className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary-100">
+                <HiPhone className="h-4 w-4" aria-hidden="true" /> Phone
+              </dt>
+              <dd className="mt-1 text-sm font-medium">
+                <a href={siteConfig.kira.phoneHref} className="hover:underline">{siteConfig.kira.phone}</a>
+              </dd>
+            </div>
+            <div className="rounded-xl bg-white/10 p-4">
+              <dt className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary-100">
+                <HiEnvelope className="h-4 w-4" aria-hidden="true" /> Sales
+              </dt>
+              <dd className="mt-1 text-sm font-medium">
+                <a href={`mailto:${siteConfig.kira.email}`} className="hover:underline">{siteConfig.kira.email}</a>
+              </dd>
+            </div>
+          </dl>
           <div className="flex flex-wrap justify-center gap-4">
             <a
               href="https://kirascales.com"
@@ -253,13 +287,14 @@ export default function KiraPage() {
               Visit Our Website
               <HiArrowTopRightOnSquare className="w-4 h-4" />
             </a>
-            <Link
-              href="/contact"
+            <a
+              href={`mailto:${siteConfig.kira.email}`}
               className="inline-flex items-center gap-2 px-6 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-white/10 transition-colors"
             >
-              Contact Us
-            </Link>
+              Email Sales
+            </a>
           </div>
+          <p className="mt-8 font-mono text-xs text-primary-100">{siteConfig.kira.name} · {siteConfig.kira.rc}</p>
         </div>
       </div>
     </div>

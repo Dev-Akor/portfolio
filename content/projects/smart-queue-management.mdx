@@ -1,96 +1,75 @@
 ---
 title: Smart Queue Management System
-description: A real-time queue management system for businesses to streamline customer flow, reduce wait times, and improve service delivery.
-date: 2024-02-01
-technologies: ["Next.js", "TypeScript", "Node.js", "WebSocket", "PostgreSQL", "Tailwind CSS", "Prisma"]
-status: active
-featured: true
+shortTitle: Smart Queue
+description: A queue system for service centres — reception issues numbered tokens with wait estimates, counters call customers in strict FIFO order with spoken announcements, a public display board updates live, and admins get audit-backed reports.
+date: 2026-06-06
+category: Web App
+status: completed
+visibility: private
+role: Sole engineer — final-year project
+timeline: "2026"
+platforms: ["Web"]
+order: 6
+technologies: ["PHP", "MySQL", "Bootstrap", "JavaScript"]
+metrics:
+  - value: "18"
+    label: JSON API endpoints
+  - value: "8"
+    label: Database tables
+  - value: "3"
+    label: Staff roles + public board
+  - value: "5s"
+    label: Live board refresh (configurable)
+highlights:
+  - Collision-free daily token numbering, even with several receptionists
+  - Two counters can never call the same customer, thanks to row locks
+  - Live display board and spoken announcements without WebSockets
+  - Every token transition recorded for reporting and audit
 ---
 
-## Overview
+## The problem
 
-The Smart Queue Management System is a web-based application designed to help businesses manage customer queues efficiently. It provides a real-time dashboard for staff and a customer-facing display system.
+Queues at banks, clinics and government offices are often manual, unfair and opaque. Customers don't know how long they'll wait, staff can't see the load, and managers have no data. This system automates the whole flow: issuing tokens, calling customers fairly, showing the queue, and reporting on performance.
 
-## Problem Statement
+It was built as my final-year project, *Development of a Smart Queue Management System for Service Centers*.
 
-In Nigeria, long queues are a daily reality at banks, government offices, hospitals, and service centers. The problem isn't always a shortage of staff — it's poor queue management:
+## What it does
 
-- Customers don't know their position or estimated wait time
-- Staff can't see the full picture of queue status
-- No data to optimize staffing and service delivery
+- **Reception** issues a token per service type (for example A-001) with an estimated wait time, and prints a receipt.
+- **Counters** open a session, call the next customer in FIFO order, and mark tokens as serving, completed or skipped. Calls are announced aloud using the browser's speech synthesis.
+- **Display board** shows the live queue on a TV or kiosk, refreshing at an interval admins can configure.
+- **Admins** manage users, counters, service types and which counters serve which services, and see a live dashboard and reports.
 
-## Solution
+## Architecture
 
-A digital queue system that:
+<Architecture
+  layers={[
+    { name: 'Clients', nodes: ['Reception', 'Counter', 'Admin', 'Public display board'] },
+    { name: 'Middleware', nodes: ['Session & idle timeout', 'Role check', 'CSRF'] },
+    { name: 'API', nodes: ['Queue', 'Admin', 'Board', 'Reports'] },
+    { name: 'Services', nodes: ['Auth', 'Tokens', 'Queue (FIFO & wait estimate)', 'Reports', 'Config'] },
+    { name: 'Data', nodes: ['MySQL — tokens, counters, audit log'] },
+  ]}
+/>
 
-1. **Customer registration**: Customers get a numbered ticket via SMS, kiosk, or QR code
-2. **Real-time updates**: Display boards show current serving numbers and estimated wait times
-3. **Staff dashboard**: Agents see their queue, call next customer with one click
-4. **Analytics**: Managers see real-time and historical data on wait times, service times, and throughput
+## Engineering challenges
 
-## Technical Architecture
+<Challenge n={1} title="Unique token numbers under concurrency">
+  Token numbers reset daily per service type. A sequence table keyed by service and date is incremented atomically inside a transaction, so two receptionists issuing tokens at the same moment can never get the same number.
+</Challenge>
 
-### Frontend
-- **Next.js 14** with App Router
-- **WebSocket** (Socket.io) for real-time updates
-- **Tailwind CSS** for responsive design
+<Challenge n={2} title="Two counters calling the same customer">
+  "Call next" runs in a transaction that locks the oldest waiting token for the counter's services (`SELECT … FOR UPDATE`). The second counter waits for the lock and gets the next customer instead.
+</Challenge>
 
-### Backend
-- **Node.js** with Express
-- **PostgreSQL** with Prisma ORM
-- **Redis** for session management and pub/sub
-- **Socket.io** server for WebSocket connections
+<Challenge n={3} title="Live updates on shared PHP hosting">
+  WebSockets aren't available on typical shared hosting, so the display board and dashboards poll lightweight JSON endpoints at a configurable interval. It's simple, robust and cheap to run.
+</Challenge>
 
-### Queue Logic
+<Challenge n={4} title="Security in plain PHP">
+  A middleware chain handles sessions with idle timeout, role checks and CSRF tokens. Passwords use bcrypt, the session ID is regenerated on login, all queries use prepared statements, and internal folders are blocked from direct web access.
+</Challenge>
 
-```typescript
-interface QueueTicket {
-  id: string
-  number: number
-  serviceType: string
-  issuedAt: Date
-  calledAt?: Date
-  completedAt?: Date
-  status: 'waiting' | 'called' | 'serving' | 'done' | 'no-show'
-}
+## Results
 
-class QueueService {
-  async issueTicket(serviceType: string): Promise<QueueTicket> {
-    const lastNumber = await this.getLastTicketNumber(serviceType)
-    const ticket = await this.db.ticket.create({
-      data: {
-        number: lastNumber + 1,
-        serviceType,
-        status: 'waiting',
-      }
-    })
-    await this.notifyClients({ type: 'TICKET_ISSUED', ticket })
-    return ticket
-  }
-
-  async callNext(agentId: string): Promise<QueueTicket | null> {
-    const next = await this.db.ticket.findFirst({
-      where: { status: 'waiting' },
-      orderBy: { number: 'asc' },
-    })
-    if (!next) return null
-
-    const updated = await this.db.ticket.update({
-      where: { id: next.id },
-      data: { status: 'called', calledAt: new Date(), agentId }
-    })
-    await this.notifyClients({ type: 'CUSTOMER_CALLED', ticket: updated })
-    return updated
-  }
-}
-```
-
-## Current Status
-
-The project is in active development. Current milestone: completing the staff dashboard and testing WebSocket reliability under concurrent load.
-
-## Lessons Learned
-
-Building real-time systems is significantly more complex than request-response patterns. Managing state consistency between server, multiple browser clients, and display boards requires careful architectural decisions.
-
-Next steps include multi-branch support and a mobile app for customers to track their position remotely.
+The system is complete, with ER, use-case and architecture diagrams, and was delivered as my final-year project.

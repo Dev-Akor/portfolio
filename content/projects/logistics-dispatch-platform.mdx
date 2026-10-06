@@ -1,0 +1,83 @@
+---
+title: Logistics & Dispatch Platform
+shortTitle: Dispatch Platform
+description: A complete courier platform for a Nigerian logistics company — customers book and track shipments, drivers deliver with photo proof of delivery and live GPS, and operations staff approve, price and dispatch from a real-time web dashboard.
+date: 2026-07-01
+category: Logistics
+status: live
+visibility: confidential
+role: Lead engineer & solutions architect (sole engineer)
+timeline: Jul 2026 — phase 1 shipped in two weeks
+client: Nigerian courier & logistics company (under NDA)
+platforms: ["Android", "Web"]
+featured: true
+order: 2
+technologies: ["Flutter", "Dart", "Supabase", "PostgreSQL", "Deno", "TypeScript", "Firebase Cloud Messaging", "Cloudflare Pages"]
+metrics:
+  - value: "16"
+    label: Shipment states, enforced in the database
+  - value: "319"
+    label: Automated test cases
+  - value: "65"
+    label: Row-level security policies
+  - value: "2 wks"
+    label: From first commit to production (phase 1)
+highlights:
+  - One Flutter codebase serves customers, drivers and admins on Android and the web
+  - Every shipment transition is atomic, audited and enforced by Postgres, not the client
+  - Real-time admin dashboard and push notifications to drivers and customers
+  - Photo proof of delivery and battery-aware GPS tracking while in transit
+  - 22 engineering documents and 6 architecture decision records written before the code
+---
+
+<Callout type="note" title="Confidential client work">
+  This platform was built for a client under confidentiality terms, so the client's name, branding, screenshots and code aren't shown here. Everything below describes the engineering at a high level.
+</Callout>
+
+## The problem
+
+The company dispatched deliveries over phone calls and paper waybills. There was no proof of delivery and no audit trail, customers couldn't see where their parcels were, and management had no data to run the business on.
+
+The brief was a digital chain of custody: every shipment, from booking to delivery, recorded and visible to the right people.
+
+## What it does
+
+- **Customers** book shipments with multiple packages and photos, accept or decline the price offer, track progress on a timeline, and rate deliveries.
+- **Drivers** receive assignments, accept them, step through pickup and delivery, report GPS location while in transit, and capture photo proof of delivery.
+- **Operations staff** review and approve bookings, send price offers, assign or reassign drivers, manage the driver fleet, and watch a live dashboard with charts and metrics.
+- **Anyone** can track a shipment publicly by its tracking number, without logging in.
+- **Notifications** reach phones through push notifications and an in-app notification centre.
+
+## Architecture
+
+<Architecture
+  layers={[
+    { name: 'Clients', nodes: ['Flutter Android app (customer & driver)', 'Flutter web (admin & public tracking)'] },
+    { name: 'Edge', nodes: ['Auth with custom role-claims hook', '12 Deno edge functions'] },
+    { name: 'Database', nodes: ['PostgreSQL state machines (53 functions)', 'Row-level security', 'Audit log & event history'] },
+    { name: 'Services', nodes: ['Realtime', 'Object storage (media, POD, APKs)', 'Push notifications', 'Cloudflare Pages'] },
+  ]}
+  caption="Writes go through edge functions into database functions; reads go straight to Postgres, guarded by row-level security."
+/>
+
+## Engineering challenges
+
+<Challenge n={1} title="A shipment state machine nobody can bypass">
+  Shipments move through 16 states — draft, pending approval, price offer, assigned, in transit, delivered, returned and more — with explicit forbidden transitions. Rather than trusting the app, the rules live in **PostgreSQL functions and triggers**. Each transition is atomic and writes an immutable event and an audit row. New states were later added with purely additive migrations.
+</Challenge>
+
+<Challenge n={2} title="Identity and onboarding edge cases">
+  A custom auth hook adds role claims to every login token and refuses login when no profile exists. That turned out to fire during email-confirmation sign-up too, which would have locked out every new customer. The fix — documented in an architecture decision record — was an explicit "unregistered" state with a complete-profile flow, followed by invite-based onboarding for drivers and staff.
+</Challenge>
+
+<Challenge n={3} title="Users stuck on old versions of the web app">
+  Flutter web always ships the same file name, and the CDN was caching it for hours, so users kept seeing old builds after a release. Per-file cache headers were being silently ignored. We confirmed the cause from the CDN's cache-status headers and fixed it with a site-wide revalidation rule that still allows cheap 304 responses.
+</Challenge>
+
+<Challenge n={4} title="Battery-aware, spoof-proof GPS">
+  Driver location reports are scheduled one after another so they never overlap, run only while a shipment is in transit, and stop when the app leaves the foreground. The server works out which driver is reporting from the login token, so a client can't report a location on someone else's behalf.
+</Challenge>
+
+## Results
+
+Phase 1 went from first commit to production in about two weeks and is live, with the Android app distributed directly to drivers and customers. The documentation-first approach — PRD, domain model, state machines, sequence diagrams and test plans before code — is what made that pace possible without cutting corners.

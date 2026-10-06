@@ -2,7 +2,6 @@ import type { Config } from 'tailwindcss'
 
 const config: Config = {
   content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './content/**/*.{md,mdx}',
@@ -11,23 +10,49 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // AkorLabs brand blue (#2147ff); primary-600 passes WCAG AA as text on white
         primary: {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
-          950: '#172554',
+          50: '#eef1ff',
+          100: '#e0e5ff',
+          200: '#c6cfff',
+          300: '#a3b0ff',
+          400: '#7a88ff',
+          500: '#4c5fff',
+          600: '#2147ff',
+          700: '#1a36d6',
+          800: '#1b2fa8',
+          900: '#1c2c84',
+          950: '#121a4d',
+        },
+        // AkorLabs brand red, used sparingly for the company mark
+        brand: {
+          red: '#e0241b',
+          'red-light': '#ff5b4f',
+          navy: '#0b1030',
+          // Shared gold accent (Kira Scales)
+          gold: '#fbbf24',
+          'gold-dark': '#f59e0b',
+        },
+        // Neutrals tinted towards the AkorLabs blue so surfaces read as brand, not plain white/grey
+        gray: {
+          50: '#f4f6fd',
+          100: '#e9edfa',
+          200: '#d8def3',
+          300: '#b9c2e3',
+          400: '#8791bd',
+          500: '#5f6a98',
+          600: '#454f7c',
+          700: '#323b65',
+          800: '#1f2750',
+          900: '#141a3d',
+          950: '#0b1030',
         },
       },
       fontFamily: {
-        sans: ['var(--font-geist-sans)', 'system-ui', 'sans-serif'],
-        mono: ['var(--font-geist-mono)', 'monospace'],
+        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-display)', 'var(--font-sans)', 'system-ui', 'sans-serif'],
+        brand: ['var(--font-brand)', 'var(--font-display)', 'system-ui', 'sans-serif'],
+        mono: ['var(--font-mono)', 'monospace'],
       },
       typography: (theme: (path: string) => string) => ({
         DEFAULT: {
@@ -41,6 +66,8 @@ const config: Config = {
             'h1,h2,h3,h4': {
               color: theme('colors.gray.900'),
               fontWeight: '700',
+              fontFamily: 'var(--font-display), var(--font-sans), sans-serif',
+              letterSpacing: '-0.02em',
             },
             code: {
               color: theme('colors.primary.600'),
@@ -74,8 +101,13 @@ const config: Config = {
         'fade-in': 'fadeIn 0.6s ease-in-out',
         'slide-up': 'slideUp 0.6s ease-out',
         'slide-down': 'slideDown 0.3s ease-out',
+        'brand-cell': 'brandCell 1.6s ease-in-out infinite',
       },
       keyframes: {
+        brandCell: {
+          '0%, 100%': { opacity: '0.15' },
+          '30%, 60%': { opacity: '1' },
+        },
         fadeIn: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },

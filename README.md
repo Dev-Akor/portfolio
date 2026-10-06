@@ -1,10 +1,12 @@
-﻿# AkorSolomon.dev
+# akorlabs.com
 
-Personal portfolio, blog, and business profile for **Solomon Akor** — Full Stack Developer and co-founder of [Kira Scales Limited](https://kirascales.com).
+Company website, case studies and blog for **AkorLabs Technologies** (BN 9639007), the software company founded by Solomon Akor. It also presents the group's other companies, Maldra Limited and [Kira Scales Limited](https://kirascales.com).
 
 ## Live Site
 
-[solomonakor.dev](https://solomonakor.dev)
+[akorlabs.com](https://akorlabs.com). The previous domain, solomonakor.dev, redirects here.
+
+Brand assets (logo, icons, colours) live in the AkorLabs repo under `assets/brand/`; the copies used by the site are in `public/brand/` and `app/icon.svg`.
 
 ## Tech Stack
 
@@ -125,14 +127,29 @@ Create a new `.mdx` file in `content/projects/`:
 title: Project Name
 description: Short description.
 date: 2024-06-01
+category: SaaS            # used for filtering on /projects
 technologies: ["Next.js", "TypeScript", "Tailwind CSS"]
-githubUrl: https://github.com/you/project
+status: live              # live | beta | in-development | completed | archived
+visibility: private       # public | private | confidential (client NDA)
+repoUrl: https://github.com/you/project   # only shown when visibility is public
 liveUrl: https://project.com
-status: active          # active | completed | archived
-featured: false
+role: Sole engineer
+timeline: Jan 2026 – present
+platforms: ["Web", "Android"]
+cover: /images/projects/name/cover.webp   # optional; a generated cover is used otherwise
+featured: true            # show on the home page
+order: 1                  # lower numbers appear first
+metrics:
+  - value: "42"
+    label: API endpoints
+highlights:
+  - One-line highlight
 ---
 
-Project details in MDX...
+Case study in MDX. Available components: <Architecture layers={[...]} />,
+<Challenge n={1} title="...">...</Challenge>, <Callout type="note">...</Callout>, <Figure src alt />.
+
+Never put a private repository URL in a project file: this repo is public.
 ```
 
 ## Deployment
@@ -142,7 +159,8 @@ Project details in MDX...
 1. Push your code to GitHub
 2. Import the repository in [Vercel](https://vercel.com)
 3. Add environment variables in Vercel dashboard
-4. Configure custom domain: `solomonakor.dev`
+4. Configure custom domain: `akorlabs.com`, and redirect `solomonakor.dev` to it
+5. Set `NEXT_PUBLIC_SITE_URL=https://akorlabs.com`
 
 Vercel auto-detects Next.js — no additional configuration needed.
 

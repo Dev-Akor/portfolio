@@ -1,0 +1,96 @@
+---
+title: Maldra Invoice & Quote Maker
+shortTitle: Invoice Maker
+description: A standalone invoicing app for freelancers and small firms — professional invoices, quotes and receipts in four PDF templates, quote-to-invoice conversion and payment tracking, on web and mobile.
+date: 2026-08-15
+category: SaaS
+status: live
+visibility: private
+company: Maldra Limited
+builtBy: AkorLabs Technologies
+role: Founder & lead engineer
+timeline: Aug 2026 – present
+platforms: ["Web", "Android"]
+liveUrl: https://invoice.maldra.com
+cover: /images/projects/maldra-invoice/invoice-quote.webp
+coverAlt: Maldra Invoice & Quote Maker screens — dashboard, invoice list, quote list, invoice builder and invoice preview
+featured: true
+order: 4
+technologies: ["TypeScript", "Next.js", "React", "Flutter", "Dart", "NestJS", "PostgreSQL", "Paystack"]
+metrics:
+  - value: "4"
+    label: PDF templates
+  - value: "18"
+    label: Web screens
+  - value: "2"
+    label: Apps — web & mobile
+  - value: "1"
+    label: Shared document engine
+highlights:
+  - Invoices, quotes and receipts rendered by one PDF engine shared with the Maldra POS
+  - Four templates — Classic, Modern, Minimal and Bold — with brand colour customisation
+  - Convert an accepted quote into an invoice in one step
+  - Sold as its own subscription, independent of the full business platform
+gallery:
+  - src: /images/projects/maldra-invoice/template-modern.webp
+    alt: Invoice rendered in the Modern template
+    caption: Modern template
+  - src: /images/projects/maldra-invoice/template-bold.webp
+    alt: Invoice rendered in the Bold template
+    caption: Bold template
+  - src: /images/projects/maldra-invoice/quote-classic.webp
+    alt: Quote rendered in the Classic template
+    caption: Quote — Classic template
+  - src: /images/projects/maldra-invoice/receipt-classic.webp
+    alt: Payment receipt rendered in the Classic template
+    caption: Receipt — Classic template
+---
+
+## Why a separate app
+
+Not every business needs a point of sale. Freelancers, consultants and small firms mostly need to send a professional quote, turn it into an invoice, and know who has paid. Bundling that inside a full POS made it harder to sell and harder to use.
+
+So the invoicing features of [Maldra](/projects/maldra-business-app) became a product of their own: a focused web app and a Flutter mobile app, on their own low-cost subscription, running on the same platform and API.
+
+## What it does
+
+- **Invoices and quotes** — line items from a product and service catalogue, tax and discounts, multiple currencies, drafts, and a four-step builder (details → items → preview → send).
+- **Quote → invoice** — an accepted quote becomes an invoice with one action, keeping its history.
+- **Payments and receipts** — record payments, track paid, outstanding and overdue invoices, and issue receipts.
+- **Templates** — four professionally designed PDF templates with brand colour customisation.
+- **Customers and products** — a reusable customer list and product/service catalogue.
+- **Sharing** — download as PDF or email directly to the customer.
+
+## Architecture
+
+<Architecture
+  layers={[
+    { name: 'Clients', nodes: ['Invoice Maker web (Next.js)', 'Invoice Maker mobile (Flutter)'] },
+    { name: 'Shared UI', nodes: ['Invoicing UI package', 'Document PDF engine'] },
+    { name: 'API', nodes: ['Maldra NestJS API', 'Invoicing module', 'Subscriptions'] },
+    { name: 'Data & services', nodes: ['PostgreSQL', 'Email', 'Paystack'] },
+  ]}
+  caption="The Invoice Maker reuses Maldra's API, auth and billing, with its own focused clients."
+/>
+
+## Engineering challenges
+
+<Challenge n={1} title="One document engine, many products">
+  Invoices, quotes, receipts and POS sale receipts are all produced by a single shared PDF package with a common document model. The standalone Invoice Maker, the main business app and the "invoice from a sale" flow all render identical documents, and the engine is covered by its own tests.
+</Challenge>
+
+<Challenge n={2} title="A product boundary inside a monorepo">
+  The Invoice Maker had to feel like its own product — its own sign-up, plans and navigation — while sharing auth, billing and data with Maldra. It's built as separate web and Flutter apps on top of shared UI and domain packages, so features land in both products without being duplicated.
+</Challenge>
+
+<Challenge n={3} title="Pixel-consistent PDFs on web and mobile">
+  The same invoice has to look identical whether it's generated in a browser, on a phone or on the server for email. The templates are defined once and rendered by each platform from the same data model, with fixtures covering every template.
+</Challenge>
+
+## Results
+
+The Invoice & Quote Maker is live at [invoice.maldra.com](https://invoice.maldra.com) as a standalone subscription, with a Flutter mobile app.
+
+<Callout type="note" title="About the code">
+  The codebase is private and shared with the Maldra platform. We can walk through the document engine and template system on request.
+</Callout>

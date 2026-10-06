@@ -1,5 +1,8 @@
-const SITE_URL = 'https://solomonakor.dev'
-const LOGO_URL = `${SITE_URL}/images/logo.png`
+import { siteConfig } from '../utils'
+
+const SITE_URL = siteConfig.url
+const SITE_HOST = SITE_URL.replace(/^https?:\/\//, '')
+const LOGO_URL = `${SITE_URL}/brand/akorlabs-mark.png`
 const PORTRAIT_URL = `${SITE_URL}/images/solomon-akor.jpg`
 
 function esc(str: string): string {
@@ -36,7 +39,7 @@ export function contactNotificationHtml(data: ContactNotificationData): string {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>New Contact Message — solomonakor.dev</title>
+  <title>New Contact Message — ${SITE_HOST}</title>
   <style>
     @media only screen and (max-width: 600px) {
       .wrapper { padding: 12px !important; }
@@ -62,12 +65,12 @@ export function contactNotificationHtml(data: ContactNotificationData): string {
                     <table cellpadding="0" cellspacing="0" border="0">
                       <tr>
                         <td style="padding-right:12px;vertical-align:middle;">
-                          <img src="${LOGO_URL}" alt="Solomon Akor" width="44" height="44"
+                          <img src="${LOGO_URL}" alt="AkorLabs Technologies" width="44" height="44"
                                style="border-radius:8px;display:block;border:2px solid rgba(255,255,255,0.3);" />
                         </td>
                         <td style="vertical-align:middle;">
-                          <div style="color:#ffffff;font-size:18px;font-weight:700;line-height:1.2;">Solomon Akor</div>
-                          <div style="color:#93c5fd;font-size:12px;margin-top:2px;">solomonakor.dev</div>
+                          <div style="color:#ffffff;font-size:18px;font-weight:700;line-height:1.2;">AkorLabs Technologies</div>
+                          <div style="color:#93c5fd;font-size:12px;margin-top:2px;">${SITE_HOST}</div>
                         </td>
                       </tr>
                     </table>
@@ -194,13 +197,13 @@ export function contactNotificationHtml(data: ContactNotificationData): string {
                   <td style="vertical-align:top;">
                     <div style="color:#f9fafb;font-size:15px;font-weight:700;margin-bottom:2px;">Solomon Akor</div>
                     <div style="color:#9ca3af;font-size:12px;line-height:1.6;margin-bottom:12px;">
-                      Software Developer&nbsp;&#124;&nbsp;Head of Operations&nbsp;&#124;&nbsp;Business Executive<br />
+                      Founder &amp; Lead Engineer&nbsp;&#124;&nbsp;AkorLabs Technologies<br />
                       Co-Founder, Kira Scales Limited
                     </div>
                     <table cellpadding="0" cellspacing="0" border="0">
                       <tr>
                         <td style="padding-right:12px;">
-                          <a href="${SITE_URL}" style="color:#93c5fd;font-size:12px;text-decoration:none;">&#127758; solomonakor.dev</a>
+                          <a href="${SITE_URL}" style="color:#93c5fd;font-size:12px;text-decoration:none;">&#127758; ${SITE_HOST}</a>
                         </td>
                         <td style="padding-right:12px;">
                           <a href="https://github.com/dev-akor" style="color:#93c5fd;font-size:12px;text-decoration:none;">&#128187; dev-akor</a>
@@ -221,7 +224,7 @@ export function contactNotificationHtml(data: ContactNotificationData): string {
               <div style="border-top:1px solid #374151;margin-top:20px;padding-top:16px;">
                 <p style="margin:0;color:#4b5563;font-size:11px;text-align:center;">
                   This notification was sent automatically from your contact form at
-                  <a href="${SITE_URL}" style="color:#6b7280;text-decoration:none;">solomonakor.dev</a>.
+                  <a href="${SITE_URL}" style="color:#6b7280;text-decoration:none;">${SITE_HOST}</a>.
                   Reply to this email to respond directly to ${esc(data.name)}.
                 </p>
               </div>
@@ -242,7 +245,7 @@ export function contactNotificationText(data: ContactNotificationData): string {
     weekday: 'long', year: 'numeric', month: 'long',
     day: 'numeric', hour: '2-digit', minute: '2-digit',
   })
-  return `NEW CONTACT FORM MESSAGE — solomonakor.dev
+  return `NEW CONTACT FORM MESSAGE — ${SITE_HOST}
 ==========================================
 
 From:     ${data.name}
@@ -260,7 +263,7 @@ Website:  ${SITE_URL}
 
 —
 Solomon Akor
-Software Developer | Head of Operations | Business Executive
+Founder & Lead Engineer | AkorLabs Technologies
 Co-Founder, Kira Scales Limited
 ${SITE_URL}
 `

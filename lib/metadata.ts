@@ -1,4 +1,4 @@
-﻿import type { Metadata } from 'next'
+import type { Metadata } from 'next'
 import { siteConfig } from './utils'
 
 interface PageMetadataProps {
@@ -22,17 +22,23 @@ export function createMetadata({
   authors,
   keywords,
 }: PageMetadataProps = {}): Metadata {
-  const pageTitle = title ? `${title} | Solomon Akor` : siteConfig.title
+  // The root layout's title template appends the company name; social cards need it spelled out
+  const socialTitle = title ? `${title} | ${siteConfig.name}` : siteConfig.title
   const absoluteUrl = url.startsWith('http') ? url : `${siteConfig.url}${url}`
   const absoluteImage = image?.startsWith('http') ? image : `${siteConfig.url}${image}`
 
   return {
-    title: pageTitle,
+    title: title ?? { absolute: siteConfig.title },
     description,
     keywords: keywords ?? [
+      'AkorLabs Technologies',
+      'AkorLabs',
       'Solomon Akor',
+      'Software Company Nigeria',
+      'Software Development Company Lagos',
+      'Full-Stack Software Engineer Nigeria',
       'Software Developer Nigeria',
-      'Head of Operations',
+      'Flutter Developer Nigeria',
       'Kira Scales Limited',
       'Next.js Developer',
       'React',
@@ -40,37 +46,24 @@ export function createMetadata({
       'Nigeria Tech',
       'Industrial Weighing Nigeria',
     ],
-    authors: authors ? authors.map((a) => ({ name: a })) : [{ name: 'Solomon Akor' }],
-    creator: 'Solomon Akor',
-    metadataBase: new URL(siteConfig.url),
+    authors: authors ? authors.map((a) => ({ name: a })) : [{ name: siteConfig.founder.name }],
+    creator: siteConfig.name,
     alternates: { canonical: absoluteUrl },
     openGraph: {
-      title: pageTitle,
+      title: socialTitle,
       description,
       url: absoluteUrl,
       siteName: siteConfig.name,
-      images: [{ url: absoluteImage, width: 1200, height: 630, alt: pageTitle }],
+      images: [{ url: absoluteImage, width: 1200, height: 630, alt: socialTitle }],
       locale: 'en_US',
       type,
       ...(type === 'article' && publishedAt ? { publishedTime: publishedAt } : {}),
     },
     twitter: {
       card: 'summary_large_image',
-      title: pageTitle,
+      title: socialTitle,
       description,
       images: [absoluteImage],
-      creator: '@solomonakor',
-    },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-      },
     },
   }
 }
