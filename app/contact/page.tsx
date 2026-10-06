@@ -1,4 +1,4 @@
-﻿import { Metadata } from 'next'
+import { Metadata } from 'next'
 import { createMetadata } from '@/lib/metadata'
 import Image from 'next/image'
 import { ContactForm } from '@/components/contact/ContactForm'
@@ -9,7 +9,7 @@ import { siteConfig } from '@/lib/utils'
 export const metadata: Metadata = createMetadata({
   title: 'Contact',
   description:
-    'Get in touch with Solomon Akor for software development projects, collaborations, or Kira Scales business inquiries.',
+    'Contact AkorLabs Technologies about building a platform, a code walkthrough of our work, or partnerships. Kira Scales enquiries welcome too.',
   url: '/contact',
 })
 
@@ -60,13 +60,11 @@ export default function ContactPage() {
     <div className="section-padding">
       <div className="container-custom">
         <div className="max-w-2xl mb-12">
-          <p className="text-sm font-semibold text-primary-600 dark:text-primary-400 uppercase tracking-wider mb-3">
-            Get in Touch
-          </p>
-          <h1 className="heading-xl text-gray-900 dark:text-white mb-5">Contact</h1>
+          <p className="eyebrow mb-3">Contact</p>
+          <h1 className="heading-xl text-gray-900 dark:text-white mb-5">Work with AkorLabs</h1>
           <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
-            Whether you have a project in mind, want to collaborate, or have a question about
-            Kira Scales — I&apos;d love to hear from you.
+            Have a platform to build, a system that needs rescuing, or want a walkthrough of one of our
+            private projects? Tell us about it and the founder will reply personally.
           </p>
         </div>
 
@@ -85,16 +83,16 @@ export default function ContactPage() {
                 />
               </div>
               <div>
-                <p className="font-semibold text-gray-900 dark:text-white">Solomon Akor</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Software Developer</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Head of Operations, Kira Scales</p>
+                <p className="font-semibold text-gray-900 dark:text-white">{siteConfig.founder.name}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{siteConfig.founder.role}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{siteConfig.company.name}</p>
               </div>
             </div>
 
             <div className="card p-6">
               <h2 className="font-semibold text-gray-900 dark:text-white mb-5">Contact Information</h2>
               <div className="space-y-4">
-                {contactInfo.map(({ icon: Icon, label, value, href, external }) => (
+                {contactInfo.filter((item) => item.href !== '').map(({ icon: Icon, label, value, href, external }) => (
                   <div key={label} className="flex items-start gap-3">
                     <div className="w-9 h-9 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0">
                       <Icon className="w-4 h-4 text-primary-600 dark:text-primary-400" />
@@ -119,10 +117,21 @@ export default function ContactPage() {
               </div>
             </div>
 
+            {/* Kira Scales enquiries go straight to their sales team */}
+            <div className="card p-6">
+              <h2 className="font-semibold text-gray-900 dark:text-white mb-1">Weighbridges &amp; scales?</h2>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Contact {siteConfig.kira.name} directly.</p>
+              <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                <li><a href={`mailto:${siteConfig.kira.email}`} className="hover:text-primary-600 dark:hover:text-primary-400">{siteConfig.kira.email}</a></li>
+                <li><a href={siteConfig.kira.phoneHref} className="hover:text-primary-600 dark:hover:text-primary-400">{siteConfig.kira.phone}</a></li>
+                <li className="text-gray-500 dark:text-gray-400">{siteConfig.kira.address}</li>
+              </ul>
+            </div>
+
             {/* Response time note */}
             <div className="card p-5 bg-primary-50 dark:bg-primary-900/10 border-primary-100 dark:border-primary-900/30">
               <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                <span className="font-semibold">Response time:</span> I typically respond within
+                <span className="font-semibold">Response time:</span> we typically respond within
                 24–48 hours on business days.
               </p>
             </div>

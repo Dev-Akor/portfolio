@@ -1,0 +1,112 @@
+---
+title: Maldra Business App
+shortTitle: Maldra
+description: An offline-first business operating system for African SMEs — point of sale, inventory, purchasing, customers and payments that keep working when the internet doesn't, across web, Android and iOS.
+date: 2026-07-01
+category: SaaS
+status: live
+visibility: private
+company: Maldra Limited
+builtBy: AkorLabs Technologies
+role: Founder & lead engineer — product, architecture, web, backend, mobile, DevOps
+timeline: Jul 2026 – present
+platforms: ["Web (PWA)", "Android", "iOS"]
+liveUrl: https://maldra.com
+cover: /images/projects/maldra/counter-desktop.webp
+coverAlt: Maldra's Counter checkout running on a shop's desktop, with a thermal receipt printer and barcode scanner
+featured: true
+order: 1
+technologies: ["TypeScript", "Next.js", "NestJS", "PostgreSQL", "Supabase", "Flutter", "Dart", "SQLite", "Paystack", "Docker", "Render", "Vercel", "Sentry", "GitHub Actions"]
+metrics:
+  - value: "8"
+    label: Apps in one monorepo
+  - value: "255"
+    label: API endpoints
+  - value: "76"
+    label: Database migrations
+  - value: "460+"
+    label: Automated test files
+highlights:
+  - Sales made offline sync exactly once — no lost or duplicated transactions
+  - One TypeScript business core runs on the server, the web and inside the Flutter app
+  - Money and stock live in append-only ledgers enforced by Postgres itself
+  - Tenant isolation enforced by row-level security, tested adversarially
+  - Full Paystack subscription lifecycle with signed, idempotent webhooks
+  - Self-service custom domains for every business's public storefront
+gallery:
+  - src: /images/projects/maldra/inventory-tablet.webp
+    alt: Maldra inventory screen on a tablet showing stock levels and low-stock alerts
+    caption: Inventory with low-stock and out-of-stock insights
+  - src: /images/projects/maldra/mobile.webp
+    alt: Maldra mobile app in a shop owner's hand
+    caption: The Flutter mobile app — the same sale rules as the web, offline
+---
+
+## The problem
+
+Most small businesses in Nigeria run on paper, WhatsApp and spreadsheets. The point-of-sale tools that exist either need a constant internet connection or are cash-agent terminals — and connectivity in a busy market is never constant. When the network drops, the shop still has customers at the counter.
+
+Maldra is built for that reality: a modular business platform where the checkout (the **Counter**) keeps selling offline on a cheap Android phone or a desktop browser, and reconciles with the server *correctly* when the connection comes back.
+
+## What it does
+
+- **Counter / POS** — barcode scanning with the device camera, multiple units per product (kg, litre, carton) with conversions, server-calculated tax, manager-approved discounts, held sales, refunds, cash sessions, Bluetooth thermal receipts or PDF, and PIN unlock that works offline.
+- **Inventory** — stock adjustments with photo evidence, transfers between locations, batch and expiry tracking, cost and profit, low-stock insights, CSV import.
+- **Purchasing** — suppliers, a purchase-order approval workflow, goods receiving and supplier balances.
+- **Customers & finance** — customer credit balances, expenses, daily sales reports and analytics dashboards.
+- **Multi-branch** — organisations → branches → locations, per-branch pricing, and owner / manager / cashier / inventory roles with device provisioning.
+- **Business websites** — a public product page for each business with WhatsApp ordering and automated custom domains.
+- **Billing** — monthly plans paid by card auto-renew, bank transfer, USSD or QR through Paystack, with a free trial.
+
+## Architecture
+
+The codebase is a pnpm monorepo organised as ports and adapters: pure domain packages at the centre, infrastructure adapters around them, and thin apps on the outside. Dependencies only ever point inwards.
+
+<Architecture
+  layers={[
+    { name: 'Clients', nodes: ['Counter web app (PWA)', 'Owner admin', 'Marketing site', 'Flutter POS app', 'Invoice Maker apps'] },
+    { name: 'On device', nodes: ['Embedded TypeScript runtime (QuickJS)', 'Local SQLite / IndexedDB journal'] },
+    { name: 'API', nodes: ['NestJS HTTP layer', 'Sync & provisioning', 'Paystack webhooks', 'Domain service'] },
+    { name: 'Domain core', nodes: ['Kernel', 'Commerce', 'Inventory', 'Subscriptions', 'Notifications'] },
+    { name: 'Data & services', nodes: ['PostgreSQL (RLS, ledgers, outbox)', 'Object storage', 'Paystack', 'Email', 'Vercel Domains API', 'Sentry'] },
+  ]}
+  caption="High-level architecture. Every client goes through the same domain core, including the mobile app, which embeds it."
+/>
+
+## Engineering challenges
+
+<Challenge n={1} title="Offline sales that sync exactly once">
+  Every write on a device is recorded in a local journal and replayed to the server in order, by a per-device sequence number rather than the device clock, which can't be trusted. Batches are idempotent, so a retry after a dropped connection can never create a duplicate sale.
+
+  Only infrastructure failures are retried. Business conflicts — like selling stock another device already sold — are **surfaced to the user, never silently overwritten**. The sync path is tested against real Postgres, including several devices syncing at once and a device restarting mid-sync.
+</Challenge>
+
+<Challenge n={2} title="One business core on every platform">
+  The pricing, tax, stock and sale rules are written once, in pure TypeScript. The server uses them directly, the web app uses them in the browser, and the Flutter app runs the **same bundle inside an embedded JavaScript engine**. Dart provides a bridge for the journal, printer, scanner, connectivity and app lifecycle.
+
+  A sale rung up offline on an Android phone follows exactly the same rules as one made on the web.
+</Challenge>
+
+<Challenge n={3} title="Ledger-based correctness, enforced by the database">
+  Money and stock movements are stored in append-only ledgers; a database trigger rejects any update or delete. Balances are projections maintained by triggers, and each command commits its snapshot, ledger entries, audit entry and outbox event in a **single transaction**.
+</Challenge>
+
+<Challenge n={4} title="Tenant isolation you can't forget to apply">
+  Every business table uses forced row-level security scoped to the current tenant, so a missing `WHERE` clause in application code can't leak another business's data. Isolation is tested adversarially: a raw database connection scoped to one tenant cannot see another's rows.
+</Challenge>
+
+<Challenge n={5} title="Real-world billing and app-store rules">
+  The Paystack subscription lifecycle covers signed webhooks, idempotent payment references, protection against late out-of-order charges, plan upgrades and downgrades, and staff-recorded in-person payments. Mobile store builds hide every payment prompt to comply with Apple and Google Play policies.
+</Challenge>
+
+<Challenge n={6} title="Automated custom domains">
+  A business can connect its own domain from the dashboard. Maldra checks the domain is registered, attaches it through the Vercel API, and a background worker re-checks DNS until it verifies — so typing someone else's domain never works.
+</Challenge>
+
+## Results
+
+Maldra is live in production at [maldra.com](https://maldra.com), with the Counter, the owner dashboard and the [Invoice & Quote Maker](/projects/maldra-invoice-quote-maker) running as separate products on the same platform. It's under active development.
+
+<Callout type="note" title="About the code">
+  The Maldra codebase is private. We're happy to walk through the architecture, the sync engine or the ledger design on a call.
+</Callout>

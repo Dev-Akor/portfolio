@@ -1,5 +1,8 @@
-const SITE_URL = 'https://solomonakor.dev'
-const LOGO_URL = `${SITE_URL}/images/logo.png`
+import { siteConfig } from '../utils'
+
+const SITE_URL = siteConfig.url
+const SITE_HOST = SITE_URL.replace(/^https?:\/\//, '')
+const LOGO_URL = `${SITE_URL}/brand/akorlabs-mark.png`
 const PORTRAIT_URL = `${SITE_URL}/images/solomon-akor.jpg`
 
 function esc(str: string): string {
@@ -30,7 +33,7 @@ export function autoResponseHtml(data: AutoResponseData): string {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Thank You for Contacting Solomon Akor</title>
+  <title>Thank You for Contacting AkorLabs Technologies</title>
   <style>
     @media only screen and (max-width: 600px) {
       .wrapper { padding: 12px !important; }
@@ -55,12 +58,12 @@ export function autoResponseHtml(data: AutoResponseData): string {
                     <table cellpadding="0" cellspacing="0" border="0">
                       <tr>
                         <td style="padding-right:12px;vertical-align:middle;">
-                          <img src="${LOGO_URL}" alt="Solomon Akor" width="44" height="44"
+                          <img src="${LOGO_URL}" alt="AkorLabs Technologies" width="44" height="44"
                                style="border-radius:8px;display:block;border:2px solid rgba(255,255,255,0.3);" />
                         </td>
                         <td style="vertical-align:middle;">
-                          <div style="color:#ffffff;font-size:18px;font-weight:700;line-height:1.2;">Solomon Akor</div>
-                          <div style="color:#93c5fd;font-size:12px;margin-top:2px;">Software Developer &amp; Head of Operations</div>
+                          <div style="color:#ffffff;font-size:18px;font-weight:700;line-height:1.2;">AkorLabs Technologies</div>
+                          <div style="color:#93c5fd;font-size:12px;margin-top:2px;">Software for African businesses</div>
                         </td>
                       </tr>
                     </table>
@@ -196,7 +199,7 @@ export function autoResponseHtml(data: AutoResponseData): string {
                     <div style="color:#d1d5db;font-size:13px;margin-bottom:4px;font-weight:500;">Best regards,</div>
                     <div style="color:#f9fafb;font-size:16px;font-weight:700;margin-bottom:4px;">Solomon Akor</div>
                     <div style="color:#9ca3af;font-size:12px;line-height:1.6;margin-bottom:16px;">
-                      Software Developer&nbsp;&#124;&nbsp;Head of Operations&nbsp;&#124;&nbsp;Business Executive<br />
+                      Founder &amp; Lead Engineer&nbsp;&#124;&nbsp;AkorLabs Technologies<br />
                       Co-Founder, Kira Scales Limited
                     </div>
                   </td>
@@ -210,7 +213,7 @@ export function autoResponseHtml(data: AutoResponseData): string {
                 <tr>
                   <td style="padding:4px 12px 4px 0;white-space:nowrap;">
                     <a href="${SITE_URL}" style="color:#93c5fd;font-size:12px;text-decoration:none;font-weight:500;">
-                      &#127758;&nbsp;solomonakor.dev
+                      &#127758;&nbsp;${SITE_HOST}
                     </a>
                   </td>
                   <td style="padding:4px 12px;white-space:nowrap;border-left:1px solid #374151;">
@@ -235,7 +238,7 @@ export function autoResponseHtml(data: AutoResponseData): string {
                 <p style="margin:0;color:#4b5563;font-size:11px;text-align:center;">
                   You can reply directly to this email and it will reach Solomon.
                   Sent from the contact form at
-                  <a href="${SITE_URL}" style="color:#6b7280;text-decoration:none;">solomonakor.dev</a>.
+                  <a href="${SITE_URL}" style="color:#6b7280;text-decoration:none;">${SITE_HOST}</a>.
                 </p>
               </div>
             </td>
@@ -264,16 +267,16 @@ Expected response time: Within 24–48 business hours.
 Best regards,
 
 Solomon Akor
-Software Developer | Head of Operations | Business Executive
+Founder & Lead Engineer | AkorLabs Technologies
 Co-Founder, Kira Scales Limited
 
-Website:  https://solomonakor.dev
+Website:  ${SITE_URL}
 GitHub:   https://github.com/dev-akor
 Email:    hello@solomonakor.dev
 Phone:    +234 906 481 7484
 
 ---
 You can reply directly to this email and it will reach Solomon.
-Sent from the contact form at solomonakor.dev.
+Sent from the contact form at ${SITE_HOST}.
 `
 }

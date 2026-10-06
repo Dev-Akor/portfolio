@@ -19,7 +19,6 @@ const schema = z.object({
   message: z.string().min(20).max(2000),
 })
 
-const resend = new Resend(process.env.RESEND_API_KEY)
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL ?? 'akorsolomon.dev@gmail.com'
 // Switch to 'Solomon Akor <noreply@solomonakor.dev>' once domain is verified in Resend dashboard
 const FROM_SENDER = process.env.EMAIL_FROM ?? 'Solomon Akor <onboarding@resend.dev>'
@@ -29,6 +28,16 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const data = schema.parse(body)
     const receivedAt = new Date()
+
+    // Created per request so builds and previews without a key don't crash at import time
+    if (!process.env.RESEND_API_KEY) {
+      console.error('[contact] RESEND_API_KEY is not set')
+      return NextResponse.json(
+        { success: false, message: 'Messaging is temporarily unavailable. Please email hello@solomonakor.dev' },
+        { status: 503 }
+      )
+    }
+    const resend = new Resend(process.env.RESEND_API_KEY)
 
     // Send both emails in parallel
     const [notificationResult, autoReplyResult] = await Promise.allSettled([
@@ -44,7 +53,7 @@ export async function POST(request: NextRequest) {
         from: FROM_SENDER,
         to: data.email,
         replyTo: CONTACT_EMAIL,
-        subject: `Thank You for Contacting Solomon Akor`,
+        subject: `Thank you for contacting AkorLabs Technologies`,
         html: autoResponseHtml(data),
         text: autoResponseText(data),
       }),

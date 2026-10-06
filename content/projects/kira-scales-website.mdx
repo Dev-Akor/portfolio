@@ -1,96 +1,92 @@
 ---
-title: Kira Scales Website
-description: Corporate website for Kira Scales Limited — a professional platform for our industrial weighing solutions business.
-date: 2023-11-01
-technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Contentlayer", "Vercel"]
+title: Kira Scales — E-commerce & CMS
+shortTitle: Kira Scales
+description: A full-stack online store and headless CMS for an industrial weighing company — Paystack checkout, proforma invoices, order tracking, a built-in CRM and newsletters, and SEO built to rank across Nigeria.
+date: 2026-05-14
+category: E-commerce
+status: live
+visibility: private
+role: Co-founder & sole engineer — design system, build, payments, SEO and deployment
+timeline: May 2026 – present
+company: Kira Scales Limited
+platforms: ["Web"]
 liveUrl: https://kirascales.com
-status: completed
+cover: /images/projects/kira/truck-weighbridge.webp
+coverAlt: A loaded tipper truck on a newly installed Kira Scales weighbridge
 featured: true
+order: 3
+technologies: ["Next.js", "React", "TypeScript", "Payload CMS", "MongoDB", "Tailwind CSS", "Paystack", "Vercel", "GraphQL"]
+metrics:
+  - value: "14"
+    label: CMS collections
+  - value: "38"
+    label: Pages, plus 26 API routes
+  - value: "300+"
+    label: Legacy URLs redirected
+  - value: "3"
+    label: Ways to buy — card, transfer, proforma
+highlights:
+  - Prices are always re-calculated on the server; the browser is never trusted
+  - Payment confirmation is race-safe — exactly one confirmation email, every time
+  - A CRM and newsletter system built into the CMS, with consent handling
+  - Marketing staff run content and campaigns without admin access
+  - Migrated from the old domain without losing search rankings
+gallery:
+  - src: /images/projects/kira/apapa-install.webp
+    alt: A Kira Scales weighbridge being tested with calibration weights at Apapa port
+    caption: Real installation photography is used throughout the site
 ---
 
-## Overview
+## The problem
 
-The Kira Scales website is the official digital presence for Kira Scales Limited, our industrial weighing solutions company. It needed to communicate professionalism, technical expertise, and trustworthiness to potential clients in the B2B space.
+Kira Scales Limited is our sister company in industrial weighing, with a head office in Ikeja and a branch in Idumota, Lagos. It supplies, installs and calibrates weighbridges and industrial scales across Nigeria. Its old website didn't rank, couldn't take payments, and every lead arrived as an unstructured phone call.
 
-## Requirements
+Industrial equipment is a high-value B2B purchase: buyers want a formal proforma invoice for approval, often pay by bank transfer, and need to know where their order is. The new platform had to support all of that, and let non-technical staff run the content and marketing.
 
-The site needed to:
+## What it does
 
-- Showcase our products (weighbridges, truck scales, floor scales, platform scales)
-- Detail our services (installation, calibration, maintenance)
-- Generate qualified leads through contact forms
-- Rank well for relevant search terms in Nigeria
-- Work reliably on slower internet connections
+- **Online store** — a product catalogue with categories, a cart, and checkout by Paystack or direct bank transfer.
+- **B2B purchasing** — printable proforma invoices with per-product VAT, quote and service request forms, and order tracking.
+- **Order lifecycle** — status emails sent automatically as orders move from pending to paid to delivered; bank-transfer orders wait until staff confirm payment.
+- **CRM** — contacts are created and de-duplicated automatically from every quote, proforma, order and sign-up, each with an activity history.
+- **Newsletters** — campaigns targeted by source, tag or staff owner, test sends, and unsubscribes and bounces synced back automatically.
+- **CMS** — 14 collections with live preview, drafts, redirects, site search, a form builder, CSV import/export and a branded admin dashboard, with separate admin and marketing roles.
+- **SEO** — search-intent landing pages, city landing pages, structured data, a sitemap index and a Google Merchant Center product feed.
 
-## Design Decisions
+## Architecture
 
-### Technology Choice
+<Architecture
+  layers={[
+    { name: 'Edge', nodes: ['Vercel edge proxy (legacy domain redirect)'] },
+    { name: 'App', nodes: ['Next.js App Router (RSC + ISR)', 'API route handlers', 'Payload CMS admin'] },
+    { name: 'Core', nodes: ['Payload local API', 'Pricing & checkout', 'Webhooks', 'Scheduled jobs'] },
+    { name: 'Data & services', nodes: ['MongoDB', 'Blob storage', 'Paystack', 'Email', 'Newsletter provider', 'Merchant Center feed'] },
+  ]}
+  caption="Next.js and Payload CMS run as one app; content changes revalidate pages incrementally."
+/>
 
-I chose Next.js with static generation for maximum performance and reliability. In Nigeria, CDN-delivered static pages load faster and are more resilient to server issues.
+## Engineering challenges
 
-```
-Performance Goals:
-- Lighthouse Score: 95+
-- First Contentful Paint: < 1.5s
-- Time to Interactive: < 2.5s
-- Core Web Vitals: All green
-```
+<Challenge n={1} title="Trustworthy payments under a race condition">
+  The customer's browser redirect and the payment provider's webhook can both arrive at the same moment. Prices are never taken from the client — every cart line is **re-priced on the server** with the same rules as the storefront — and the amount actually paid is checked. The order moves to "paid" in a single conditional update on its current status, so exactly one caller wins and the confirmation email goes out exactly once.
+</Challenge>
 
-### Content Strategy
+<Challenge n={2} title="Emails lost to serverless shutdown">
+  Some confirmation emails never arrived because the serverless function finished before the send completed. Sends are now awaited on the verification path and also triggered from the webhook path, so either route delivers.
+</Challenge>
 
-Content is managed via Contentlayer with MDX files. This allows:
-- Version-controlled content
-- Rich text with embedded components
-- No database dependency
-- Easy updates without deployment
+<Challenge n={3} title="Changing domains without losing search rankings">
+  The site moved from the old domain to a new one. A full map of 300+ legacy URLs was collapsed to single-hop permanent redirects at the edge, with paths preserved, plus canonical URLs, sitemap fixes and structured data so search engines could transfer existing rankings.
+</Challenge>
 
-### Lead Generation
-
-The contact form integrates with:
-- Email notifications for immediate response
-- Structured data capture for follow-up
-- WhatsApp link for Nigerian business culture (where WhatsApp is primary business communication)
-
-## Key Features
-
-### Product Catalog
-
-Each product page includes:
-- Technical specifications
-- Typical applications
-- High-quality imagery
-- Request-a-quote CTA
-
-### Service Pages
-
-Services are detailed with:
-- Process explanation
-- What's included
-- Timeline expectations
-- Pricing approach (quote-based)
-
-### SEO
-
-Targeted local SEO for terms like:
-- "weighbridge installation Nigeria"
-- "truck scale Lagos"
-- "weighbridge calibration"
-- "industrial scales Nigeria"
+<Challenge n={4} title="A consent-aware CRM inside the CMS">
+  Contacts from many sources are merged into one record per email or phone. Consent is explicit, unsubscribes and hard bounces sync back through signed webhooks, and a contact is never re-subscribed automatically. Role-scoped access lets marketing staff work without full admin rights.
+</Challenge>
 
 ## Results
 
-Since launch:
-- 40% of new inquiries come through the website
-- Average page load time < 2 seconds
-- Top 5 Google ranking for "weighbridge Nigeria"
-- Consistent qualified leads monthly
+The platform is live at [kirascales.com](https://kirascales.com), with integration tests covering pricing, checkout, proforma VAT and campaign audiences, and end-to-end tests of the purchase flows.
 
-## What I'd Do Differently
-
-With more time, I'd add:
-- Customer portal for service records and calibration certificates
-- Online specification configurator
-- Case studies from existing clients
-- Live chat integration
-
-The website has proven that even in B2B industrial markets, a well-executed digital presence generates measurable business impact.
+<Callout type="note" title="About the code">
+  The site started from Payload's official website template and was rebuilt around Kira's catalogue, checkout and marketing needs. The repository is private; we can walk through the payment and CRM design on request.
+</Callout>

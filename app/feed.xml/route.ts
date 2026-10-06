@@ -1,4 +1,4 @@
-﻿import { Feed } from 'feed'
+import { Feed } from 'feed'
 import { allPosts } from 'contentlayer/generated'
 import { compareDesc } from 'date-fns'
 import { siteConfig } from '@/lib/utils'
@@ -15,8 +15,8 @@ export async function GET() {
     link: siteConfig.url,
     language: 'en',
     image: siteConfig.ogImage,
-    favicon: `${siteConfig.url}/favicon.ico`,
-    copyright: `All rights reserved ${new Date().getFullYear()}, Solomon Akor`,
+    favicon: `${siteConfig.url}/brand/icon-192.png`,
+    copyright: `All rights reserved ${new Date().getFullYear()}, ${siteConfig.name}`,
     author: {
       name: 'Solomon Akor',
       email: siteConfig.email,

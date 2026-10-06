@@ -7,7 +7,7 @@ import { LatestArticles } from '@/components/home/LatestArticles'
 import { siteConfig } from '@/lib/utils'
 
 export const metadata: Metadata = {
-  title: siteConfig.title,
+  title: { absolute: siteConfig.title },
   description: siteConfig.description,
   alternates: { canonical: siteConfig.url },
   openGraph: {
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
         url: siteConfig.ogImage,
         width: 1200,
         height: 630,
-        alt: 'Solomon Akor — Software Developer & Head of Operations',
+        alt: siteConfig.title,
       },
     ],
   },
@@ -28,49 +28,48 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: siteConfig.title,
     description: siteConfig.description,
-    creator: '@solomonakor',
     images: [siteConfig.ogImage],
   },
 }
 
-const personJsonLd = {
-  '@context': 'https://schema.org',
+const founderJsonLd = {
   '@type': 'Person',
-  name: 'Solomon Akor',
+  name: siteConfig.founder.name,
+  jobTitle: siteConfig.founder.role,
+  image: `${siteConfig.url}${siteConfig.founder.image}`,
+  url: `${siteConfig.url}/about#founder`,
+  sameAs: [siteConfig.github, siteConfig.linkedin],
+}
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: siteConfig.company.name,
+  alternateName: 'AkorLabs',
   url: siteConfig.url,
-  image: `${siteConfig.url}/images/solomon-akor.jpg`,
-  jobTitle: 'Software Developer',
-  description:
-    'Software Developer, Head of Operations, and Co-Founder of Kira Scales Limited. Building modern web applications and leading industrial weighing solutions across Nigeria.',
+  logo: `${siteConfig.url}/brand/akorlabs-mark.png`,
+  description: siteConfig.description,
   email: siteConfig.email,
-  nationality: 'Nigerian',
-  knowsLanguage: ['English', 'Yoruba', 'Igbo', 'Arabic'],
-  alumniOf: { '@type': 'Organization', name: 'Computer Science' },
+  founder: founderJsonLd,
+  areaServed: 'Africa',
+  location: { '@type': 'Place', name: 'Nigeria' },
   knowsAbout: [
-    'Software Development',
-    'Next.js',
-    'TypeScript',
-    'Node.js',
-    'Industrial Weighing',
-    'Business Operations',
-    'Entrepreneurship',
+    'Software development',
+    'Offline-first applications',
+    'Point of sale systems',
+    'Logistics software',
+    'Payments integration',
+    'Mobile apps',
   ],
-  sameAs: [siteConfig.github, siteConfig.linkedin, siteConfig.twitter],
-  worksFor: {
-    '@type': 'Organization',
-    name: 'Kira Scales Limited',
-    url: siteConfig.kiraScales,
-    description: 'Industrial weighing solutions provider in Nigeria',
-  },
 }
 
 const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: 'Solomon Akor',
+  name: siteConfig.company.name,
   url: siteConfig.url,
   description: siteConfig.description,
-  author: { '@type': 'Person', name: 'Solomon Akor', url: siteConfig.url },
+  publisher: { '@type': 'Organization', name: siteConfig.company.name },
   inLanguage: 'en-US',
 }
 
@@ -79,16 +78,16 @@ export default function HomePage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
       />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
       />
       <Hero />
-      <AboutSummary />
-      <Skills />
       <FeaturedProjects />
+      <Skills />
+      <AboutSummary />
       <LatestArticles />
     </>
   )

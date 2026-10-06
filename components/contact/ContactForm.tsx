@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -26,8 +26,16 @@ export function ContactForm() {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) })
+
+  // Prefill the subject from ?subject=..., e.g. "Request a walkthrough" links on project pages.
+  // Read on the client so the contact page can stay statically generated.
+  useEffect(() => {
+    const subject = new URLSearchParams(window.location.search).get('subject')
+    if (subject) setValue('subject', subject.slice(0, 200))
+  }, [setValue])
 
   const onSubmit = async (data: FormData) => {
     setStatus('loading')

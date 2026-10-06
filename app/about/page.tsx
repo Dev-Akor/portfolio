@@ -1,331 +1,362 @@
 import { Metadata } from 'next'
-import { createMetadata } from '@/lib/metadata'
 import Image from 'next/image'
+import Link from 'next/link'
 import {
-  HiAcademicCap, HiBuildingOffice, HiGlobeAlt, HiCodeBracket,
-  HiEnvelope, HiBriefcase,
+  HiAcademicCap, HiBuildingOffice, HiGlobeAlt, HiCodeBracket, HiBriefcase, HiRocketLaunch,
+  HiEnvelope, HiSignalSlash, HiShieldCheck, HiWrenchScrewdriver, HiUserPlus,
 } from 'react-icons/hi2'
 import { FaGithub, FaLinkedin } from 'react-icons/fa6'
-import Link from 'next/link'
-import { siteConfig } from '@/lib/utils'
+import { createMetadata } from '@/lib/metadata'
+import { brandTiles, cn, siteConfig } from '@/lib/utils'
+import { Logo } from '@/components/brand/Logo'
+import { Reveal } from '@/components/ui/Reveal'
 
 export const metadata: Metadata = createMetadata({
-  title: 'About Solomon Akor',
+  title: 'About',
   description:
-    'Solomon Akor is a Computer Science graduate, Software Developer, and Co-Founder of Kira Scales Limited. Learn about his journey from warehouse operations to industrial entrepreneurship and full-stack development.',
+    'AkorLabs Technologies is a Nigerian software company building offline-first, payment-ready platforms for African businesses. Founded by Solomon Akor, alongside Maldra Limited and Kira Scales Limited.',
   url: '/about',
   keywords: [
-    'Solomon Akor', 'Software Developer Nigeria', 'Kira Scales Limited',
-    'Head of Operations', 'Computer Science', 'Next.js Developer Nigeria',
-    'Industrial weighing Nigeria', 'entrepreneur Nigeria',
+    'AkorLabs Technologies', 'AkorLabs', 'Solomon Akor', 'software company Nigeria',
+    'Maldra Limited', 'Kira Scales Limited', 'software development Lagos',
   ],
 })
 
-const organizationJsonLd = {
+const aboutJsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: 'Kira Scales Limited',
-  url: siteConfig.kiraScales,
-  description: 'Industrial weighing solutions provider in Nigeria — weighbridges, truck scales, calibration, and installation services.',
-  founder: {
-    '@type': 'Person',
-    name: 'Solomon Akor',
+  '@type': 'AboutPage',
+  mainEntity: {
+    '@type': 'Organization',
+    name: siteConfig.company.name,
     url: siteConfig.url,
+    logo: `${siteConfig.url}/brand/akorlabs-mark.png`,
+    description: siteConfig.company.description,
+    founder: {
+      '@type': 'Person',
+      name: siteConfig.founder.name,
+      jobTitle: siteConfig.founder.role,
+      url: `${siteConfig.url}/about#founder`,
+      sameAs: [siteConfig.github, siteConfig.linkedin],
+    },
+    location: { '@type': 'Place', name: 'Nigeria' },
   },
-  location: {
-    '@type': 'Place',
-    name: 'Nigeria',
-  },
-  knowsAbout: ['Weighbridges', 'Industrial Scales', 'Calibration', 'Truck Scales', 'Load Cells'],
 }
 
-const skills = {
-  Frontend: ['Next.js', 'React', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'HTML/CSS'],
-  Backend: ['Node.js', 'REST APIs', 'PostgreSQL', 'MongoDB', 'Express.js'],
-  Tools: ['Git', 'GitHub', 'VS Code', 'Vercel', 'Figma'],
-  Learning: ['Python', 'Docker', 'AWS', 'GraphQL'],
-}
+const principles = [
+  {
+    icon: HiSignalSlash,
+    title: 'Built for real conditions',
+    description:
+      'Networks drop and devices are cheap. Our software keeps working offline and reconciles correctly when the connection returns.',
+  },
+  {
+    icon: HiShieldCheck,
+    title: 'Correct before clever',
+    description:
+      'Money, stock and shipments are recorded in audited ledgers and state machines, enforced by the database rather than trusted to the app.',
+  },
+  {
+    icon: HiWrenchScrewdriver,
+    title: 'Operators, not just engineers',
+    description:
+      'We run businesses ourselves, so we design around the counter, the warehouse and the weighbridge, not around a demo.',
+  },
+]
+
+const companies = [
+  {
+    name: siteConfig.company.name,
+    kind: 'Software',
+    registration: siteConfig.company.registration,
+    description:
+      'Designs, builds and supports software products and client platforms. Engineered Maldra and ApplyAI, and delivered a logistics and dispatch platform for a Nigerian courier company.',
+    href: '/projects',
+    cta: 'See our work',
+  },
+  {
+    name: 'Maldra Limited',
+    kind: 'SaaS',
+    registration: null,
+    description:
+      'Operates Maldra, the offline-first business-management platform for African SMEs, and the Maldra Invoice & Quote Maker. Built by AkorLabs Technologies.',
+    href: '/projects/maldra-business-app',
+    cta: 'About Maldra',
+  },
+  {
+    name: siteConfig.kira.name,
+    kind: 'Industrial weighing',
+    registration: siteConfig.kira.rc,
+    description: `Supplies, installs, calibrates and maintains weighbridges and industrial scales across Nigeria. Head office at ${siteConfig.kira.address}, with a branch in Idumota.`,
+    href: '/kira',
+    cta: 'About Kira Scales',
+  },
+]
 
 const journey = [
   {
     icon: HiAcademicCap,
     period: '2016–2020',
-    title: 'Computer Science Degree',
+    title: 'Computer Science degree',
     description:
-      'Built a strong foundation in algorithms, data structures, software engineering, and system design. This rigorous academic background shapes how I approach every problem — structured, systematic, and first-principles.',
+      'A foundation in algorithms, data structures, software engineering and system design.',
   },
   {
     icon: HiBriefcase,
     period: '2020–2021',
-    title: 'Warehouse & Commodity Operations',
+    title: 'Warehouse & commodity operations',
     description:
-      'Entered the commodities sector managing cocoa warehouse operations in West Africa. Gained ground-level exposure to industrial logistics, measurement, and supply chain management — and the inefficiencies that plagued them.',
+      'Managed cocoa warehouse operations in West Africa, with first-hand exposure to logistics, measurement and supply chains — and their inefficiencies.',
   },
   {
     icon: HiGlobeAlt,
     period: '2021–2022',
-    title: 'International Exposure — Weighbridge Technology',
+    title: 'Weighbridge technology abroad',
     description:
-      'Traveled abroad and encountered advanced European weighbridge and industrial weighing infrastructure. The contrast with Nigeria was striking. I identified a clear, underserved market and returned with a plan.',
+      'Saw European weighbridge and industrial weighing infrastructure up close, identified an underserved market at home, and came back with a plan.',
   },
   {
     icon: HiBuildingOffice,
-    period: '2022–Present',
-    title: 'Co-Founder & Head of Operations — Kira Scales Limited',
+    period: '2022–present',
+    title: 'Co-Founder & Managing Director — Kira Scales Limited',
     description:
-      'Co-founded Kira Scales Limited, Nigeria\'s dedicated industrial weighing solutions company. As Head of Operations, I lead client delivery, field engineering, calibration projects, and business development across multiple industries.',
+      'Co-founded Kira Scales Limited and leads it as Managing Director: client delivery, field engineering, calibration projects and business development.',
   },
   {
     icon: HiCodeBracket,
-    period: '2023–Present',
-    title: 'Software Developer',
+    period: '2023–present',
+    title: 'Software engineering',
     description:
-      'Channeled the business and engineering insights from Kira Scales into software. Now building modern web applications with Next.js, TypeScript, and Node.js — creating digital tools that solve real operational challenges.',
+      'Turned operational experience into software: first Kira Scales’ own e-commerce platform, then production systems for retail, logistics and invoicing on web and mobile.',
+  },
+  {
+    icon: HiRocketLaunch,
+    period: '2026–present',
+    title: 'Founder & Lead Engineer — AkorLabs Technologies',
+    description:
+      'Registered AkorLabs Technologies as the software company behind Maldra, ApplyAI and client platforms.',
   },
 ]
+
+const stack = {
+  Web: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Payload CMS'],
+  Mobile: ['Flutter & Dart', 'React Native & Expo', 'SQLite / offline storage', 'Bluetooth printing'],
+  Backend: ['NestJS & Node.js', 'PostgreSQL & row-level security', 'Supabase', 'MongoDB', 'PHP & MySQL'],
+  Delivery: ['Docker', 'Vercel & Render', 'GitHub Actions CI', 'Paystack', 'Sentry'],
+}
 
 export default function AboutPage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
-      />
-    <div className="section-padding">
-      <div className="container-custom">
-        {/* Header */}
-        <div className="max-w-3xl mb-16">
-          <p className="text-sm font-semibold text-primary-600 dark:text-primary-400 uppercase tracking-wider mb-3">
-            About Me
-          </p>
-          <h1 className="heading-xl text-gray-900 dark:text-white mb-6">
-            Developer, Operator, Entrepreneur
-          </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
-            I&apos;m Solomon Akor — Software Developer, Head of Operations, and Co-Founder of{' '}
-            <Link href="/kira" className="text-primary-600 dark:text-primary-400 hover:underline">
-              Kira Scales Limited
-            </Link>
-            . I build software and lead industrial operations in Nigeria.
-          </p>
-        </div>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutJsonLd) }} />
 
-        {/* Profile + Bio */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20">
-          <div className="lg:col-span-2 space-y-5 text-gray-600 dark:text-gray-400 leading-relaxed">
-            {/* Portrait on mobile */}
-            <div className="flex justify-center lg:hidden mb-8">
-              <div className="relative w-48 h-48 rounded-2xl overflow-hidden shadow-xl border-4 border-white dark:border-gray-800">
-                <Image
-                  src="/images/solomon-akor.jpg"
-                  alt="Solomon Akor — Software Developer and Head of Operations"
-                  fill
-                  className="object-cover object-top"
-                  sizes="192px"
-                />
-              </div>
-            </div>
+      {/* Header */}
+      <section className="band-blue">
+        <div className="container-custom section-padding">
+          <p className="eyebrow-on-dark mb-5">About AkorLabs</p>
+          <h1 className="heading-xl mb-6 max-w-4xl text-white">
+            A software company built inside real businesses.
+          </h1>
+          <div className="grid max-w-5xl gap-6 text-lg leading-relaxed text-primary-100 md:grid-cols-2">
             <p>
-              I&apos;m Solomon Akor — a Computer Science graduate, Software Developer, and
-              Co-Founder of{' '}
-              <Link href="/kira" className="text-primary-600 dark:text-primary-400 hover:underline">
-                Kira Scales Limited
-              </Link>
-              . I lead operations and business development for Nigeria&apos;s dedicated industrial
-              weighing company while building the software products that sit on top of it.
+              AkorLabs Technologies builds production software for African businesses: point of sale and inventory,
+              logistics and dispatch, e-commerce and payments, on the web and on the phones people actually use.
             </p>
             <p>
-              My journey started with a Computer Science degree, then took a pivot into the physical
-              world. Managing cocoa warehouses taught me that measurement, accountability, and
-              logistics are the invisible backbone of Nigerian trade — and that they were
-              systematically broken.
-            </p>
-            <p>
-              Traveling abroad crystallized it: I saw weighbridge infrastructure that simply
-              didn&apos;t exist at home. I came back with a mission. We co-founded Kira Scales
-              Limited to supply, install, and calibrate industrial weighing equipment across
-              Nigeria — and built a team that delivers on that promise.
-            </p>
-            <p>
-              Running field operations gave me a new perspective on software. The best tools aren&apos;t
-              built in isolation — they&apos;re built by people who understand the operational reality
-              they&apos;re solving. That&apos;s why I&apos;m a developer: to close the gap between
-              industry and technology in Africa.
+              We started inside an operating company. The systems we build first had to work for our own counters,
+              warehouses and weighbridges, and that&apos;s still the standard we hold every product and client platform to.
             </p>
           </div>
+        </div>
+      </section>
 
-          {/* Sidebar: portrait + quick facts + connect */}
-          <div className="space-y-4">
-            {/* Portrait — desktop only */}
-            <div className="hidden lg:block relative overflow-hidden rounded-2xl shadow-xl aspect-[3/4]">
-              <Image
-                src="/images/solomon-akor.jpg"
-                alt="Solomon Akor — Software Developer, Head of Operations, Co-Founder of Kira Scales Limited"
-                fill
-                className="object-cover object-top"
-                sizes="320px"
-              />
-            </div>
+      <div className="container-custom section-padding space-y-24">
+        {/* Principles */}
+        <section aria-labelledby="principles-heading">
+          <p className="eyebrow mb-3">How we work</p>
+          <h2 id="principles-heading" className="heading-lg mb-10 text-gray-900 dark:text-white">What we believe</h2>
+          <div className="grid gap-4 md:grid-cols-3">
+            {principles.map(({ icon: Icon, title, description }, i) => (
+              <Reveal key={title} delay={i * 80} className="panel p-6">
+                <span className={cn('mb-5 flex h-10 w-10 items-center justify-center rounded-xl', brandTiles[i % brandTiles.length])}>
+                  <Icon className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <h3 className="mb-2 font-bold text-gray-900 dark:text-white">{title}</h3>
+                <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">{description}</p>
+              </Reveal>
+            ))}
+          </div>
+        </section>
 
-            {/* Quick facts */}
-            <div className="card p-6">
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Quick Facts</h3>
-              <dl className="space-y-3 text-sm">
+        {/* Companies */}
+        <section id="companies" className="scroll-mt-24" aria-labelledby="companies-heading">
+          <p className="eyebrow mb-3">Our companies</p>
+          <h2 id="companies-heading" className="heading-lg mb-10 text-gray-900 dark:text-white">Three companies, one standard</h2>
+          <div className="grid gap-4 md:grid-cols-3">
+            {companies.map((c) => (
+              <article key={c.name} className="flex flex-col panel p-6">
+                <p className="text-xs font-semibold text-primary-600 dark:text-primary-400">{c.kind}</p>
+                <h3 className="mt-1 font-display text-xl font-bold text-gray-900 dark:text-white">{c.name}</h3>
+                {c.registration && <p className="mt-1 font-mono text-xs text-gray-500 dark:text-gray-400">{c.registration}</p>}
+                <p className="mt-3 flex-1 text-sm leading-relaxed text-gray-600 dark:text-gray-400">{c.description}</p>
+                <Link href={c.href} className="mt-5 text-sm font-semibold text-primary-600 hover:underline dark:text-primary-400">
+                  {c.cta} →
+                </Link>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* Founder */}
+        <section id="founder" className="scroll-mt-24" aria-labelledby="founder-heading">
+          <p className="eyebrow mb-3">Founder</p>
+          <div className="grid gap-12 lg:grid-cols-[320px_1fr]">
+            <div className="space-y-4">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800">
+                <Image
+                  src={siteConfig.founder.image}
+                  alt={`Portrait of ${siteConfig.founder.name}`}
+                  fill
+                  sizes="(min-width: 1024px) 320px, 100vw"
+                  className="object-cover object-top"
+                />
+              </div>
+              <dl className="space-y-3 panel p-5 text-sm dark:border-gray-800">
                 {[
-                  { dt: 'Location', dd: 'Nigeria' },
-                  { dt: 'Role', dd: 'Software Developer' },
-                  { dt: 'Also', dd: 'Head of Operations' },
-                  { dt: 'Company', dd: 'Kira Scales Limited' },
+                  { dt: 'AkorLabs', dd: 'Founder & Lead Engineer' },
+                  { dt: 'Kira Scales', dd: 'Co-Founder & Managing Director' },
                   { dt: 'Education', dd: 'Computer Science' },
                   { dt: 'Languages', dd: 'English, Yoruba, Igbo, Arabic' },
                 ].map(({ dt, dd }) => (
-                  <div key={dt} className="flex gap-2">
-                    <dt className="text-gray-500 dark:text-gray-500 min-w-[90px] shrink-0">{dt}:</dt>
-                    <dd className="text-gray-700 dark:text-gray-300 font-medium">{dd}</dd>
+                  <div key={dt} className="grid grid-cols-[96px_1fr] gap-2">
+                    <dt className="text-gray-500 dark:text-gray-400">{dt}</dt>
+                    <dd className="font-medium text-gray-900 dark:text-white">{dd}</dd>
                   </div>
                 ))}
               </dl>
-            </div>
-
-            {/* Connect */}
-            <div className="card p-6">
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Connect</h3>
-              <div className="space-y-3">
-                <a
-                  href={`mailto:${siteConfig.email}`}
-                  className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
-                >
-                  <HiEnvelope className="w-4 h-4" />
-                  {siteConfig.email}
+              <div className="flex flex-wrap gap-2">
+                <a href={`mailto:${siteConfig.email}`} className="chip py-1.5 hover:border-primary-300">
+                  <HiEnvelope className="h-3.5 w-3.5" aria-hidden="true" /> Email
                 </a>
-                <a
-                  href={siteConfig.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
-                >
-                  <FaGithub className="w-4 h-4" />
-                  github.com/dev-akor
+                <a href={siteConfig.linkedin} target="_blank" rel="noopener noreferrer" className="chip py-1.5 hover:border-primary-300">
+                  <FaLinkedin className="h-3.5 w-3.5" aria-hidden="true" /> LinkedIn
                 </a>
-                <a
-                  href={siteConfig.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
-                >
-                  <FaLinkedin className="w-4 h-4" />
-                  LinkedIn
+                <a href={siteConfig.github} target="_blank" rel="noopener noreferrer" className="chip py-1.5 hover:border-primary-300">
+                  <FaGithub className="h-3.5 w-3.5" aria-hidden="true" /> GitHub
                 </a>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Journey timeline */}
-        <div className="mb-20">
-          <h2 className="heading-md text-gray-900 dark:text-white mb-10">My Journey</h2>
-          <div className="relative">
-            <div className="absolute left-6 top-0 bottom-0 w-px bg-gray-200 dark:bg-gray-800 hidden sm:block" />
-            <div className="space-y-8">
-              {journey.map(({ icon: Icon, period, title, description }, idx) => (
-                <div key={title} className="relative sm:pl-16">
-                  <div className="hidden sm:flex absolute left-0 top-1 w-12 h-12 rounded-full bg-primary-100 dark:bg-primary-900/30 items-center justify-center border-4 border-white dark:border-gray-950">
-                    <Icon className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-                  </div>
-                  <div className="card p-6">
-                    <div className="flex flex-wrap items-start gap-3 mb-3">
-                      <span className="text-xs font-mono font-medium text-gray-500 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
-                        {period}
-                      </span>
-                      <h3 className="font-bold text-gray-900 dark:text-white">{title}</h3>
-                    </div>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
-                      {description}
-                    </p>
-                    {/* Site photo on the operations card */}
-                    {idx === 3 && (
-                      <div className="mt-4 relative w-full h-48 rounded-xl overflow-hidden">
-                        <Image
-                          src="/images/solomon-akor-site.jpg"
-                          alt="Solomon Akor on-site in engineering/safety gear at a weighbridge installation"
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 768px) 100vw, 600px"
-                        />
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
+            <div className="min-w-0">
+              <h2 id="founder-heading" className="heading-lg mb-2 text-gray-900 dark:text-white">{siteConfig.founder.name}</h2>
+              <p className="mb-6 text-gray-500 dark:text-gray-400">
+                {siteConfig.founder.role}, AkorLabs Technologies · Co-Founder &amp; Managing Director, Kira Scales Limited
+              </p>
+              <div className="space-y-4 leading-relaxed text-gray-600 dark:text-gray-400">
+                <p>
+                  Solomon studied Computer Science, then spent years in the physical economy: managing cocoa warehouses,
+                  commodity operations and, after seeing modern weighbridge infrastructure abroad, co-founding Kira Scales
+                  Limited to supply, install and calibrate industrial weighing equipment across Nigeria.
+                </p>
+                <p>
+                  Running field operations showed him what business software usually gets wrong. He began building it
+                  himself: Kira Scales&apos; e-commerce platform, a logistics and dispatch system, and Maldra, an offline-first
+                  business platform for African SMEs. AkorLabs Technologies is the company those systems now come from.
+                </p>
+              </div>
+
+              <ol className="relative mt-10 space-y-6 border-l border-gray-200 pl-8 dark:border-gray-800">
+                {journey.map(({ icon: Icon, period, title, description }) => (
+                  <li key={title} className="relative">
+                    <span className="absolute -left-[49px] top-0 flex h-9 w-9 items-center justify-center rounded-full border-4 border-white bg-primary-50 dark:border-gray-950 dark:bg-primary-950">
+                      <Icon className="h-4 w-4 text-primary-600 dark:text-primary-400" aria-hidden="true" />
+                    </span>
+                    <p className="font-mono text-xs text-gray-500 dark:text-gray-400">{period}</p>
+                    <h3 className="mt-1 font-bold text-gray-900 dark:text-white">{title}</h3>
+                    <p className="mt-1 text-sm leading-relaxed text-gray-600 dark:text-gray-400">{description}</p>
+                  </li>
+                ))}
+              </ol>
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* Skills */}
-        <div className="mb-20">
-          <h2 className="heading-md text-gray-900 dark:text-white mb-10">Technical Skills</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {Object.entries(skills).map(([category, items]) => (
-              <div key={category} className="card p-6">
-                <h3 className="text-sm font-semibold text-primary-600 dark:text-primary-400 uppercase tracking-wider mb-4">
-                  {category}
-                </h3>
+        {/* Team */}
+        <section id="team" className="scroll-mt-24" aria-labelledby="team-heading">
+          <p className="eyebrow mb-3">Team</p>
+          <h2 id="team-heading" className="heading-lg mb-4 text-gray-900 dark:text-white">A founder-led team</h2>
+          <p className="mb-8 max-w-2xl text-gray-600 dark:text-gray-400">
+            AkorLabs is founder-led today, with the founder personally accountable for every system we ship. As we grow,
+            the people behind our work will be introduced here.
+          </p>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="flex items-center gap-4 panel p-4">
+              <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl">
+                <Image src={siteConfig.founder.image} alt="" fill sizes="56px" className="object-cover object-top" />
+              </span>
+              <span>
+                <span className="block font-semibold text-gray-900 dark:text-white">{siteConfig.founder.name}</span>
+                <span className="block text-sm text-gray-500 dark:text-gray-400">{siteConfig.founder.role}</span>
+              </span>
+            </div>
+            <Link
+              href="/contact?subject=Working%20with%20AkorLabs"
+              className="flex items-center gap-4 rounded-2xl border border-dashed border-gray-300 p-4 transition-colors hover:border-primary-400 dark:border-gray-700"
+            >
+              <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-900">
+                <HiUserPlus className="h-6 w-6 text-gray-500" aria-hidden="true" />
+              </span>
+              <span>
+                <span className="block font-semibold text-gray-900 dark:text-white">Work with us</span>
+                <span className="block text-sm text-gray-500 dark:text-gray-400">Engineers &amp; designers</span>
+              </span>
+            </Link>
+          </div>
+        </section>
+
+        {/* Stack */}
+        <section aria-labelledby="stack-heading">
+          <p className="eyebrow mb-3">Technology</p>
+          <h2 id="stack-heading" className="heading-lg mb-10 text-gray-900 dark:text-white">Our stack</h2>
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {Object.entries(stack).map(([group, items]) => (
+              <div key={group}>
+                <h3 className="mb-4 text-xs font-semibold text-gray-500 dark:text-gray-400">{group}</h3>
                 <ul className="space-y-2">
-                  {items.map((skill) => (
-                    <li key={skill} className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-                      <span className="w-1.5 h-1.5 rounded-full bg-primary-500" />
-                      {skill}
+                  {items.map((item) => (
+                    <li key={item} className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                      <span className="h-1.5 w-1.5 rounded-full bg-primary-500" aria-hidden="true" />
+                      {item}
                     </li>
                   ))}
                 </ul>
               </div>
             ))}
           </div>
-        </div>
+        </section>
 
-        {/* Achievements */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-16">
-          {[
-            { value: '3+', label: 'Years in Industrial Operations' },
-            { value: '5+', label: 'Weighbridge Projects Delivered' },
-            { value: '4', label: 'Languages Spoken' },
-            { value: '2', label: 'Tech Products Launched' },
-          ].map(({ value, label }) => (
-            <div key={label} className="card p-5 text-center">
-              <div className="text-3xl font-black text-primary-600 dark:text-primary-400 mb-1">{value}</div>
-              <div className="text-xs text-gray-500 dark:text-gray-400 leading-snug">{label}</div>
+        {/* Vision + CTA */}
+        <section className="overflow-hidden rounded-3xl bg-gray-900 text-white">
+          <div className="grid gap-10 p-8 md:grid-cols-[1fr_auto] md:items-end md:p-12">
+            <div className="max-w-2xl">
+              <Logo onDark className="mb-6" markClassName="h-10 w-10" />
+              <h2 className="mb-4 font-display text-3xl font-bold">Where we&apos;re going</h2>
+              <p className="leading-relaxed text-gray-300">
+                Our goal is to be the technology partner African businesses trust with their operations: growing our own
+                products like Maldra and ApplyAI, building platforms for companies that need them done properly, and
+                growing a team that holds the same standard.
+              </p>
             </div>
-          ))}
-        </div>
-
-        {/* Vision */}
-        <div className="bg-primary-50 dark:bg-primary-900/10 border border-primary-100 dark:border-primary-900/30 rounded-2xl p-8 md:p-12">
-          <h2 className="heading-md text-gray-900 dark:text-white mb-4">Vision & Goals</h2>
-          <div className="space-y-4 text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl">
-            <p>
-              My goal is to sit at the intersection of technology and industry in Africa —
-              building software that transforms how businesses operate in logistics, measurement, and trade.
-            </p>
-            <p>
-              Short-term: ship production-quality software products and scale Kira Scales
-              Limited&apos;s operations beyond Lagos into new Nigerian markets.
-            </p>
-            <p>
-              Long-term: grow Kira Scales into a technology-enabled industrial services platform,
-              and build SaaS products that solve uniquely African infrastructure and business problems at scale.
-            </p>
+            <div className="flex flex-wrap gap-3">
+              <Link href="/contact?subject=Project%20enquiry" className="inline-flex items-center rounded-lg bg-white px-6 py-3 font-semibold text-gray-900 transition-colors hover:bg-primary-50">
+                Start a project
+              </Link>
+              <Link href="/projects" className="inline-flex items-center rounded-lg border border-white/30 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10">
+                See our work
+              </Link>
+            </div>
           </div>
-          <div className="mt-8 flex flex-wrap gap-4">
-            <Link href="/contact" className="btn-primary">
-              Let&apos;s Work Together
-            </Link>
-            <Link href="/kira" className="btn-secondary">
-              Explore Kira Scales
-            </Link>
-          </div>
-        </div>
+        </section>
       </div>
-    </div>
     </>
   )
 }

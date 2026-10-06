@@ -1,93 +1,96 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { FaArrowRight } from 'react-icons/fa6'
-import { HiAcademicCap, HiBuildingOffice, HiGlobeAlt, HiCodeBracket } from 'react-icons/hi2'
+import { HiArrowRight } from 'react-icons/hi2'
+import { siteConfig } from '@/lib/utils'
+import { LogoMark } from '@/components/brand/Logo'
+import { Reveal } from '@/components/ui/Reveal'
 
-const journey = [
+const companies = [
   {
-    icon: HiAcademicCap,
-    title: 'Computer Science',
-    description: 'Computer Science graduate — strong foundation in software engineering, algorithms, and system design.',
+    name: 'AkorLabs Technologies',
+    kind: 'Software',
+    description:
+      'Our software company. We engineer products like Maldra and ApplyAI, and deliver platforms for clients, from architecture to launch and support.',
+    href: '/projects',
+    logo: null,
   },
   {
-    icon: HiBuildingOffice,
-    title: 'Industry Operations',
-    description: 'Led operations in cocoa warehousing and discovered industrial weighing during time in Europe.',
+    name: 'Maldra Limited',
+    kind: 'SaaS',
+    description:
+      'Runs Maldra, the offline-first business-management platform for African SMEs, and the Maldra Invoice & Quote Maker. Built by AkorLabs.',
+    href: '/projects/maldra-business-app',
+    logo: '/images/projects/maldra/icon.png',
   },
   {
-    icon: HiGlobeAlt,
-    title: 'Co-Founder, Kira Scales',
-    description: 'Co-founded Kira Scales Limited, now serving as Head of Operations for industrial weighing across Nigeria.',
-  },
-  {
-    icon: HiCodeBracket,
-    title: 'Software Developer',
-    description: 'Building modern web applications with Next.js, TypeScript, and Node.js for real-world impact.',
+    name: 'Kira Scales Limited',
+    kind: 'Industrial weighing',
+    description:
+      'Supplies, installs and calibrates weighbridges and industrial scales across Nigeria, from its head office in Ikeja and a branch in Idumota, Lagos.',
+    href: '/kira',
+    logo: '/images/kira-logo.png',
   },
 ]
 
 export function AboutSummary() {
   return (
-    <section className="section-padding">
+    <section className="section-padding bg-white dark:bg-gray-900/40" aria-labelledby="companies-heading">
       <div className="container-custom">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Text */}
-          <div>
-            <p className="text-sm font-semibold text-primary-600 dark:text-primary-400 uppercase tracking-wider mb-3">
-              About Me
-            </p>
-            <h2 className="heading-lg text-gray-900 dark:text-white mb-6">
-              A developer who understands both code and operations
-            </h2>
-            <div className="space-y-4 text-gray-600 dark:text-gray-400 leading-relaxed">
-              <p>
-                I&apos;m Solomon Akor — Software Developer, Head of Operations, and Co-Founder of{' '}
-                <Link href="/kira" className="text-primary-600 dark:text-primary-400 hover:underline">
-                  Kira Scales Limited
-                </Link>
-                . My Computer Science background paired with hands-on industrial experience gives
-                me a unique lens on building things that work in the real world.
-              </p>
-              <p>
-                After recognizing a gap in Nigeria&apos;s industrial weighing sector, I co-founded Kira Scales —
-                an industrial weighing solutions company supplying, installing, and calibrating weighbridges
-                for businesses across Nigeria.
-              </p>
-              <p>
-                Today I combine leadership in operations with software development, building tools
-                and products that bridge the digital and industrial worlds.
+        <div className="mb-12 max-w-2xl">
+          <p className="eyebrow mb-3">Our companies</p>
+          <h2 id="companies-heading" className="heading-lg mb-4 text-gray-900 dark:text-white">
+            Software built by people who run real businesses
+          </h2>
+          <p className="leading-relaxed text-gray-600 dark:text-gray-400">
+            AkorLabs sits alongside two operating companies. We build software for the same problems we deal with every day:
+            stock at the counter, deliveries on the road, and payments that have to reconcile.
+          </p>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-3">
+          {companies.map((c, i) => (
+            <Reveal key={c.name} delay={i * 100} className="flex">
+              <Link
+                href={c.href}
+                className="group flex w-full flex-col rounded-2xl border border-gray-200 bg-gray-50 p-6 transition-all hover:-translate-y-0.5 hover:border-primary-400 hover:shadow-lg dark:border-gray-800 dark:bg-gray-900 dark:hover:border-primary-600"
+              >
+                <span className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-white p-2 ring-1 ring-gray-200 dark:ring-gray-700">
+                  {c.logo ? (
+                    <Image src={c.logo} alt="" width={32} height={32} className="h-auto w-full object-contain" />
+                  ) : (
+                    <LogoMark className="h-7 w-7" />
+                  )}
+                </span>
+                <span className="w-fit rounded-full bg-primary-100 px-2.5 py-0.5 text-xs font-semibold text-primary-700 dark:bg-primary-500/15 dark:text-primary-300">{c.kind}</span>
+                <span className="mt-1 font-display text-lg font-bold text-gray-900 dark:text-white">{c.name}</span>
+                <span className="mt-2 flex-1 text-sm leading-relaxed text-gray-600 dark:text-gray-400">{c.description}</span>
+                <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-primary-600 dark:text-primary-400">
+                  Learn more <HiArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                </span>
+              </Link>
+            </Reveal>
+          ))}
+        </div>
+
+        {/* Founder */}
+        <Reveal className="mt-14">
+          <div className="band-blue flex flex-col gap-6 rounded-2xl p-6 text-white sm:flex-row sm:items-center md:p-8">
+            <span className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl">
+              <Image src={siteConfig.founder.image} alt={`Portrait of ${siteConfig.founder.name}`} fill sizes="80px" className="object-cover object-top" />
+            </span>
+            <div className="flex-1">
+              <p className="w-fit rounded-full bg-brand-gold px-2.5 py-0.5 text-xs font-semibold text-gray-950">Founder</p>
+              <p className="mt-1 font-display text-xl font-bold">{siteConfig.founder.name}</p>
+              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-primary-100">
+                Founder &amp; Lead Engineer of AkorLabs, and Co-Founder &amp; Managing Director of Kira Scales Limited. Before
+                writing business software, Solomon ran warehouses, commodity operations and weighbridge installations.
               </p>
             </div>
-
-            {/* Portrait — visible only on mobile (desktop shows the card grid) */}
-            <div className="relative w-full h-64 rounded-2xl overflow-hidden my-8 lg:hidden shadow-lg">
-              <Image
-                src="/images/solomon-akor.jpg"
-                alt="Solomon Akor — Software Developer and Head of Operations"
-                fill
-                className="object-cover object-top"
-                sizes="(max-width: 1024px) 100vw, 0px"
-              />
-            </div>
-
-            <Link href="/about" className="btn-primary mt-2 inline-flex">
-              Read Full Story <FaArrowRight className="w-3 h-3" />
+            <Link href="/about#founder" className="btn-gold shrink-0 px-5 py-2.5 text-sm">
+              Meet the founder <HiArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </div>
-
-          {/* Journey cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {journey.map(({ icon: Icon, title, description }) => (
-              <div key={title} className="card p-5 group hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
-                <div className="w-10 h-10 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mb-4 group-hover:bg-primary-200 dark:group-hover:bg-primary-900/50 transition-colors">
-                  <Icon className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-                </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2 text-sm">{title}</h3>
-                <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">{description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   )

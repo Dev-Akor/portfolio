@@ -1,0 +1,71 @@
+---
+title: ApplyAI
+description: A mobile-first job-application assistant from AkorLabs — tailored cover letters, application letters, follow-ups and resumes in minutes, an ATS compatibility checker, a job board, and PDF export, all stored offline on the device.
+date: 2026-07-30
+category: AI
+status: in-development
+visibility: private
+role: Founder & sole engineer
+timeline: Jul 2026 – present
+company: AkorLabs Technologies
+platforms: ["Android", "iOS", "Web"]
+icon: /images/projects/applyai/icon.png
+order: 5
+technologies: ["React Native", "Expo", "TypeScript", "SQLite", "Tailwind CSS"]
+metrics:
+  - value: "22"
+    label: Screens
+  - value: "3"
+    label: Platforms, one codebase
+  - value: "4"
+    label: Document generators
+  - value: "0"
+    label: API keys on the device
+highlights:
+  - Swappable AI provider interface — screens never change when the model does
+  - Offline-first on-device database with versioned migrations
+  - Cross-platform PDF export with native share
+  - Monetisation built in behind feature flags, switched off until launch
+---
+
+## The problem
+
+Generic resumes get filtered out by applicant tracking systems (ATS) before a person ever reads them, writing a tailored letter for every application takes hours, and professional career services cost hundreds of dollars. ApplyAI is designed for fresh graduates, career changers and returning professionals who need to apply well, often, and cheaply.
+
+## What it does
+
+- **Generators** — cover letters, application letters, follow-up emails and resumes, with a tone picker, templates and saved drafts.
+- **ATS checker** — scores a resume against a job description and lists issues: missing contact details, unmatched keywords and length.
+- **Job board** — listings with featured jobs and employer job posting, with source attribution built into the data layer.
+- **Documents** — searchable history, editing, and PDF export with native sharing.
+- **Design** — a custom "Dark Glass" design system with glass cards, mesh gradients, shimmer skeletons and haptics.
+
+## Architecture
+
+<Architecture
+  layers={[
+    { name: 'App', nodes: ['Expo Router screens (typed routes)', 'Zustand stores'] },
+    { name: 'Services', nodes: ['AI service (provider interface)', 'Documents', 'PDF export', 'Jobs', 'Feature gates'] },
+    { name: 'Storage', nodes: ['On-device SQLite (6 tables)', 'Secure storage'] },
+    { name: 'Planned', nodes: ['AkorLabs API (AI gateway)', 'Job data providers'] },
+  ]}
+  caption="Screens talk only to services, so the AI provider and job sources can change without touching the UI."
+/>
+
+## Engineering decisions
+
+<Challenge n={1} title="An AI layer that can be swapped without touching screens">
+  Every generation goes through a single provider interface. The app currently runs against a mock provider while the AkorLabs backend is built; switching to the real model is a one-line change, and **API keys will live only on the server**, never in the app bundle.
+</Challenge>
+
+<Challenge n={2} title="Offline-first by default">
+  Documents, drafts, profile and cached jobs live in an on-device SQLite database with versioned migrations, with a separate storage client for the web build. Everything works on a bad connection.
+</Challenge>
+
+<Challenge n={3} title="Monetisation without rewrites">
+  Export limits, ads and job-posting limits are isolated behind feature gates and flags, so pricing can be switched on at launch without changing any screens.
+</Challenge>
+
+<Callout type="warning" title="Status">
+  ApplyAI is in active development. AI generation currently uses a mock provider and the job board uses sample data while the backend is built.
+</Callout>

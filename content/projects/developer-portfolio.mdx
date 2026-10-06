@@ -1,95 +1,38 @@
 ---
-title: Developer Portfolio & Blog Platform
-description: This site — a production-ready personal portfolio and content publishing platform built with Next.js 14, Contentlayer, and Tailwind CSS.
+title: AkorLabs Website & Blog
+shortTitle: AkorLabs Website
+description: This site — AkorLabs Technologies' statically generated company website, case-study and publishing platform with an MDX blog, RSS, structured data for search, and a contact pipeline with transactional email.
 date: 2024-05-01
-technologies: ["Next.js 14", "TypeScript", "Tailwind CSS", "MDX", "Contentlayer2", "Vercel"]
-githubUrl: https://github.com/dev-akor/portfolio
+category: Web App
+status: live
+visibility: public
+role: Design & engineering
+timeline: 2024 – present
+platforms: ["Web"]
+repoUrl: https://github.com/dev-akor/portfolio
 liveUrl: https://solomonakor.dev
-status: active
-featured: false
+icon: /brand/akorlabs-mark.png
+order: 7
+technologies: ["Next.js", "TypeScript", "Tailwind CSS", "MDX", "Vercel"]
+highlights:
+  - Case studies and blog posts are type-checked MDX content
+  - Private projects are presented without exposing their repositories
+  - Structured data, RSS, sitemap and per-page social cards
+  - Contact form with validation and transactional email
 ---
 
 ## Overview
 
-This portfolio is more than a personal website — it's a complete content publishing platform built for long-term use. It combines:
+This site is AkorLabs Technologies' company website, blog and case-study platform. It's built for long-term use: content lives in MDX files alongside the code, is validated against a schema at build time, and is rendered to static pages.
 
-- Personal developer portfolio
-- Personal brand website
-- Business profile for Kira Scales Limited
-- Long-term blog for technology, business, and industry content
+## How it works
 
-## Why Build Custom?
+- **Content as code** — projects and posts are MDX files with typed frontmatter. A missing field fails the build instead of breaking a page.
+- **Case studies** — each project page is assembled from its frontmatter (role, timeline, stack, metrics, highlights) plus custom MDX components for architecture diagrams and engineering challenges.
+- **Private by design** — most of our work lives in private repositories or is under client NDA. Projects declare their visibility, and private ones show a "request a walkthrough" option instead of a repository link.
+- **SEO** — per-page metadata and social cards, JSON-LD structured data, a sitemap, RSS and canonical URLs.
+- **Contact** — validated on both client and server, with a notification and an automatic reply sent as transactional email.
 
-I could have used Notion, Hashnode, or other platforms. I chose to build because:
+## Stack
 
-1. **Full control** over design, performance, and SEO
-2. **MDX blogging** lets me embed interactive components in articles
-3. **Learning opportunity** — building the thing is how I learn the stack
-4. **Brand cohesion** — one domain for all my content and business presence
-
-## Technical Highlights
-
-### Contentlayer2 Integration
-
-Content is managed with Contentlayer2, which transforms MDX files into type-safe data:
-
-```typescript
-export const Post = defineDocumentType(() => ({
-  name: 'Post',
-  filePathPattern: 'blog/**/*.mdx',
-  contentType: 'mdx',
-  fields: {
-    title: { type: 'string', required: true },
-    category: { type: 'string', required: true },
-    tags: { type: 'list', of: { type: 'string' } },
-    featured: { type: 'boolean' },
-  },
-  computedFields: {
-    slug: { type: 'string', resolve: (p) => p._raw.flattenedPath.replace('blog/', '') },
-    readingTime: { type: 'string', resolve: (p) => readingTime(p.body.raw).text },
-  },
-}))
-```
-
-### Performance
-
-Built with performance as a primary constraint:
-- Static generation for all content pages
-- Image optimization with `next/image`
-- Font optimization with `next/font`
-- Minimal JavaScript on the client
-- Tailwind CSS for zero-runtime styles
-
-### SEO
-
-Every page has:
-- Dynamic metadata (title, description, OG tags)
-- Structured data (JSON-LD)
-- Canonical URLs
-- Sitemap generation
-- RSS feed
-
-## Design Philosophy
-
-The design follows a minimal, professional aesthetic:
-- **Dark mode** by default with light mode toggle
-- **Typography-first** — content is the focus
-- **Consistent spacing** using Tailwind's scale
-- **Fast interactions** — hover states, transitions
-
-## Deployment
-
-Deployed on Vercel with:
-- Automatic deployments from main branch
-- Preview deployments for PRs
-- Edge network for global performance
-- Custom domain: solomonakor.dev
-
-## What's Next
-
-Planned additions:
-- Newsletter subscription
-- Comments system (possibly Giscus)
-- Portfolio project filtering
-- Dark/light mode image variants
-- Reading progress indicator for long articles
+Next.js App Router with static generation, TypeScript, Tailwind CSS with a small design-token layer, Contentlayer for MDX, and Vercel for hosting. The source is [public on GitHub](https://github.com/dev-akor/portfolio).

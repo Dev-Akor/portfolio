@@ -1,17 +1,21 @@
 import Link from 'next/link'
-import Image from 'next/image'
+import { Logo } from '@/components/brand/Logo'
 import { FaGithub, FaLinkedin, FaWhatsapp } from 'react-icons/fa'
 import { HiEnvelope } from 'react-icons/hi2'
 import { siteConfig } from '@/lib/utils'
 
 const footerLinks = {
-  Navigation: [
-    { href: '/', label: 'Home' },
+  Company: [
+    { href: '/projects', label: 'Our work' },
     { href: '/about', label: 'About' },
-    { href: '/projects', label: 'Projects' },
-    { href: '/kira', label: 'Kira Scales' },
+    { href: '/about#founder', label: 'Founder' },
     { href: '/blog', label: 'Blog' },
     { href: '/contact', label: 'Contact' },
+  ],
+  'Our companies': [
+    { href: '/projects/maldra-business-app', label: 'Maldra Limited' },
+    { href: '/kira', label: 'Kira Scales Limited' },
+    { href: '/projects/applyai', label: 'ApplyAI' },
   ],
   Blog: [
     { href: '/blog/category/tech', label: 'Technology' },
@@ -36,37 +40,27 @@ export function Footer() {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50">
+    <footer className="band-navy border-t-4 border-brand-red">
       <div className="container-custom py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-8 mb-12">
           {/* Brand */}
-          <div className="md:col-span-1">
-            <Link href="/" className="flex items-center gap-2.5 group w-fit">
-              <Image
-                src="/images/logo.png"
-                alt="Solomon Akor logo"
-                width={28}
-                height={28}
-                className="rounded-md"
-              />
-              <span className="font-bold text-lg text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                Solomon<span className="text-primary-600">Akor</span>
-                <span className="text-primary-600">.</span>
-              </span>
+          <div className="col-span-2">
+            <Link href="/" aria-label="AkorLabs Technologies — home" className="w-fit">
+              <Logo onDark />
             </Link>
-            <p className="mt-3 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-              Software Developer, Head of Operations & Co-Founder of Kira Scales Limited.
-              Building products and writing about tech, business, and industrial solutions.
+            <p className="mt-4 text-sm text-gray-300 leading-relaxed">
+              We build production software for African businesses — offline-first point of sale,
+              logistics, e-commerce and payments. Founded by Solomon Akor.
             </p>
             <div className="flex items-center gap-3 mt-4">
-              {socialLinks.map(({ href, label, icon: Icon }) => (
+              {socialLinks.filter(({ href }) => href).map(({ href, label, icon: Icon }) => (
                 <a
                   key={label}
                   href={href}
                   target={href.startsWith('http') ? '_blank' : undefined}
                   rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
                   aria-label={label}
-                  className="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  className="p-2 rounded-lg bg-white/10 text-gray-200 hover:bg-brand-gold hover:text-gray-950 transition-colors"
                 >
                   <Icon className="w-4 h-4" />
                 </a>
@@ -77,7 +71,7 @@ export function Footer() {
           {/* Links */}
           {Object.entries(footerLinks).map(([category, links]) => (
             <div key={category}>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-4 text-sm uppercase tracking-wider">
+              <h3 className="font-semibold text-brand-gold mb-4 text-sm">
                 {category}
               </h3>
               <ul className="space-y-2">
@@ -89,7 +83,7 @@ export function Footer() {
                       href={href}
                       target={external ? '_blank' : undefined}
                       rel={external ? 'noopener noreferrer' : undefined}
-                      className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                      className="text-sm text-gray-300 hover:text-white transition-colors"
                     >
                       {label}
                     </Link>
@@ -101,25 +95,17 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="border-t border-gray-200 dark:border-gray-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            &copy; {year} Solomon Akor. All rights reserved.
+        <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-gray-400">
+            &copy; {year} {siteConfig.company.name} · {siteConfig.company.registration}. All rights reserved.
           </p>
-          <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-            <Link href="/sitemap.xml" className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+          <div className="flex items-center gap-4 text-sm text-gray-400">
+            <Link href="/sitemap.xml" className="hover:text-white transition-colors">
               Sitemap
             </Link>
-            <Link href="/feed.xml" className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+            <Link href="/feed.xml" className="hover:text-white transition-colors">
               RSS Feed
             </Link>
-            <a
-              href={siteConfig.kiraScales}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
-            >
-              Kira Scales
-            </a>
           </div>
         </div>
       </div>

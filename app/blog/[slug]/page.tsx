@@ -74,9 +74,10 @@ export default function BlogPostPage({ params }: Props) {
       url: siteConfig.url,
     },
     publisher: {
-      '@type': 'Person',
-      name: 'Solomon Akor',
+      '@type': 'Organization',
+      name: siteConfig.name,
       url: siteConfig.url,
+      logo: `${siteConfig.url}/brand/akorlabs-mark.png`,
     },
     datePublished: post.date,
     url: `${siteConfig.url}${post.url}`,
@@ -203,7 +204,7 @@ export default function BlogPostPage({ params }: Props) {
                         {post.author ?? 'Solomon Akor'}
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-500 mb-1">
-                        Software Developer · Head of Operations, Kira Scales Limited
+                        Founder & Lead Engineer, AkorLabs Technologies
                       </p>
                       <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
                         Computer Science graduate building modern web applications and leading industrial

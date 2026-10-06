@@ -3,27 +3,37 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 255 255 255;
-    --foreground: 15 23 42;
-  }
-
-  .dark {
-    --background: 10 10 10;
-    --foreground: 241 245 249;
-  }
-
   * {
     @apply border-gray-200 dark:border-gray-800;
   }
 
   body {
-    @apply bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100;
+    @apply bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
   html {
     scroll-behavior: smooth;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 
   ::selection {
@@ -41,11 +51,54 @@
   }
 
   .heading-xl {
-    @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight;
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter;
   }
 
   .heading-lg {
     @apply text-3xl md:text-4xl font-bold tracking-tight;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full bg-primary-100 px-3 py-1 text-xs font-semibold text-primary-700 dark:bg-primary-500/15 dark:text-primary-300;
+  }
+
+  /* Small red square before section labels, echoing a block of the logo's L */
+  .eyebrow::before,
+  .eyebrow-on-dark::before {
+    content: '';
+    @apply h-2 w-2 shrink-0 rounded-[2px] bg-brand-red;
+  }
+
+  /* Eyebrow on blue/navy bands */
+  .eyebrow-on-dark {
+    @apply inline-flex items-center gap-2 rounded-full bg-brand-gold px-3 py-1 text-xs font-semibold text-gray-950;
+  }
+
+  /* Solid brand band used to break up light sections */
+  .band-blue {
+    @apply bg-primary-700 text-white dark:bg-primary-900;
+    background-image: linear-gradient(135deg, #1a36d6 0%, #2147ff 55%, #1b2fa8 100%);
+  }
+
+  .band-navy {
+    @apply bg-gray-950 text-white;
+    background-image: linear-gradient(160deg, #141a3d 0%, #0b1030 70%);
+  }
+
+  .btn-gold {
+    @apply inline-flex items-center gap-2 rounded-lg bg-brand-gold px-6 py-3 font-semibold text-gray-950 shadow-md shadow-black/10 transition-colors hover:bg-brand-gold-dark;
+  }
+
+  .btn-outline-light {
+    @apply inline-flex items-center gap-2 rounded-lg border-2 border-white/40 px-6 py-3 font-semibold text-white transition-colors hover:border-white hover:bg-white/10;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-md border border-primary-100 bg-primary-50 px-2.5 py-1 text-xs font-medium text-primary-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200;
+  }
+
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-primary-600 focus:px-4 focus:py-2 focus:text-white;
   }
 
   .heading-md {
@@ -61,7 +114,12 @@
   }
 
   .card {
-    @apply bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow duration-200;
+    @apply bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm shadow-primary-900/5 hover:shadow-md transition-shadow duration-200;
+  }
+
+  /* Standard boxed surface for grids of content */
+  .panel {
+    @apply rounded-2xl border border-gray-200 bg-white shadow-sm shadow-primary-900/5 dark:border-gray-800 dark:bg-gray-900;
   }
 
   .badge {
@@ -83,7 +141,7 @@
 }
 
 [data-highlighted-line] {
-  @apply bg-blue-500/10 -mx-4 px-4 border-l-2 border-blue-500;
+  @apply bg-primary-500/10 -mx-4 px-4 border-l-2 border-primary-500;
 }
 
 /* Anchor link styles for headings */
@@ -113,4 +171,48 @@ h4:hover .anchor {
 
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-gray-400 dark:bg-gray-600;
+}
+
+/* First-visit splash screen (see app/layout.tsx) */
+#splash {
+  @apply fixed inset-0 z-[200] flex flex-col items-center justify-center gap-5 bg-white dark:bg-gray-950;
+  animation: splash-out 0.4s ease 2.5s forwards; /* fallback if the load event never fires */
+}
+
+.splash-done #splash {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0s linear 0.4s;
+}
+
+.splash-skip #splash {
+  display: none;
+}
+
+@keyframes splash-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #splash {
+    display: none;
+  }
+}
+
+/* Scroll reveal (see components/ui/Reveal.tsx). Content stays visible without JS. */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  .js [data-reveal][data-revealed] {
+    opacity: 1;
+    transform: none;
+  }
 }
