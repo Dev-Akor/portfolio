@@ -91,26 +91,25 @@ const services = [
 const products = [
   {
     name: 'Weighbridges',
-    description: 'Pit and pitless weighbridges from 20 to 150 tonnes capacity',
-    specs: ['20T to 150T capacity', 'Digital load cells', 'OIML certified', 'Printer integration'],
+    description: 'Pit and pitless truck weighbridges from 20 to 150 tonnes capacity, supplied and installed nationwide',
+    specs: ['20T to 150T capacity', 'Steel or concrete decks', 'Civil works included', 'Ticket printing and software'],
   },
   {
-    name: 'Truck Scales',
-    description: 'Portable and permanent truck weighing systems',
-    specs: ['Axle load measurement', 'Portable options', 'Remote monitoring', 'Data export'],
+    name: 'Industrial Scales',
+    description: 'Platform, floor, bench, crane, axle and livestock scales for warehouses, factories and farms',
+    specs: ['Floor and platform scales', 'Crane and hanging scales', 'Axle and livestock scales', 'Tank and silo weighing'],
   },
   {
-    name: 'Floor Scales',
-    description: 'Heavy-duty floor scales for warehouse and factory use',
-    specs: ['Up to 10T capacity', 'Stainless steel platforms', 'IP65 protection', 'Multiple sizes'],
+    name: 'Load Cells & Indicators',
+    description: 'Replacement load cells, weighing indicators, calibration weights and weighbridge accessories',
+    specs: ['Load cells for any brand', 'Digital weighing indicators', 'Calibration weights', 'Junction boxes and cables'],
   },
   {
-    name: 'Platform Scales',
-    description: 'Precision platform scales for mid-range weighing applications',
-    specs: ['High accuracy', 'LCD display', 'RS-232 connectivity', 'Rechargeable battery'],
+    name: 'Machines & Equipment',
+    description: 'Processing equipment for agro, packaging and construction businesses',
+    specs: ['Bagging and sealing machines', 'Concrete batching equipment', 'Agro-processing machines', 'Moisture meters'],
   },
 ]
-
 const reasons = [
   { title: 'Industry Expertise', description: 'Years of experience in the Nigerian industrial and agricultural sectors.' },
   { title: 'Quality Equipment', description: 'We supply only certified equipment from reputable international manufacturers.' },
@@ -138,6 +137,7 @@ export default function KiraPage() {
             <h1 className="heading-xl text-gray-900 dark:text-white mb-6">
               Kira Scales Limited
             </h1>
+            <p className="font-serif text-lg italic text-primary-600 dark:text-primary-400 mb-6">Precision you can trust</p>
             <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
               Nigeria&apos;s trusted provider of industrial weighing solutions.
               We supply, install, calibrate, and maintain weighbridges and industrial
@@ -221,6 +221,30 @@ export default function KiraPage() {
                 <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{description}</p>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Software */}
+        <div className="mb-20">
+          <h2 className="heading-md text-gray-900 dark:text-white text-center mb-4">
+            The Software Behind Kira
+          </h2>
+          <p className="text-center text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-12">
+            AkorLabs Technologies built and runs both of Kira&apos;s systems.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Link href="/projects/kira-scales-website" className="card p-6 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
+              <h3 className="font-bold text-gray-900 dark:text-white mb-2">kirascales.com</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                The public store and CMS: 140+ products, quotes and online payments, 88 guides, pages for every state, and an installable app.
+              </p>
+            </Link>
+            <Link href="/projects/kira-workspace" className="card p-6 hover:border-primary-300 dark:hover:border-primary-700 transition-colors">
+              <h3 className="font-bold text-gray-900 dark:text-white mb-2">Kira Workspace</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                The private operations system: clients, projects, quotations, invoices, receipts, expenses, calibration certificates and email, in one place.
+              </p>
+            </Link>
           </div>
         </div>
 

@@ -9,28 +9,30 @@ visibility: private
 role: "Co-founder & sole engineer: design system, build, payments, SEO and deployment"
 timeline: May 2026 to present
 company: Kira Scales Limited
-platforms: ["Web"]
+platforms: ["Web", "Installable app (PWA)"]
 liveUrl: https://kirascales.com
 cover: /images/projects/kira/truck-weighbridge.webp
 coverAlt: A loaded tipper truck on a newly installed Kira Scales weighbridge
 featured: true
 order: 3
-technologies: ["Next.js", "React", "TypeScript", "Payload CMS", "MongoDB", "Tailwind CSS", "Paystack", "Vercel", "GraphQL"]
+technologies: ["Next.js", "React", "TypeScript", "Payload CMS", "MongoDB", "Tailwind CSS", "Paystack", "Vercel", "Vercel Blob", "PWA", "GraphQL"]
 metrics:
-  - value: "14"
-    label: CMS collections
-  - value: "38"
-    label: Pages, plus 26 API routes
+  - value: "142"
+    label: Products across 30+ categories
+  - value: "88"
+    label: SEO articles with FAQs
+  - value: "37"
+    label: State and city landing pages
   - value: "300+"
     label: Legacy URLs redirected
-  - value: "3"
-    label: "Ways to buy: card, transfer, proforma"
 highlights:
   - Prices are always re-calculated on the server; the browser is never trusted
   - Payment confirmation is race-safe, with exactly one confirmation email every time
   - A CRM and newsletter system built into the CMS, with consent handling
   - Marketing staff run content and campaigns without admin access
   - Migrated from the old domain without losing search rankings
+  - Installable as an app on Android, iPhone, Mac and Windows, with light and dark modes
+  - Weighbridges are quote-only with price ranges; small items sell online through Paystack
 gallery:
   - src: /images/projects/kira/apapa-install.webp
     alt: A Kira Scales weighbridge being tested with calibration weights at Apapa port
@@ -51,7 +53,9 @@ Industrial equipment is a high-value B2B purchase: buyers want a formal proforma
 - **CRM:** contacts are created and de-duplicated automatically from every quote, proforma, order and sign-up, each with an activity history.
 - **Newsletters:** campaigns targeted by source, tag or staff owner, test sends, and unsubscribes and bounces synced back automatically.
 - **CMS:** 14 collections with live preview, drafts, redirects, site search, a form builder, CSV import/export and a branded admin dashboard, with separate admin and marketing roles.
-- **SEO:** search-intent landing pages, city landing pages, structured data, a sitemap index and a Google Merchant Center product feed.
+- **SEO:** a focus keyword, keywords and FAQs on every article and product, FAQ structured data, landing pages for all 36 states and the FCT, a sitemap index and a Google Merchant Center product feed.
+- **Installable app:** a web app manifest and service worker, so customers can add Kira to their home screen, dock or Start menu, with a light/dark switch on every screen.
+- **Link to the Workspace:** enquiries go to Kira's private [operations system](/projects/kira-workspace) as numbered quote requests, and anyone can scan the QR code on a Kira document to check it is genuine.
 
 ## Architecture
 
@@ -83,9 +87,17 @@ Industrial equipment is a high-value B2B purchase: buyers want a formal proforma
   Contacts from many sources are merged into one record per email or phone. Consent is explicit, unsubscribes and hard bounces sync back through signed webhooks, and a contact is never re-subscribed automatically. Role-scoped access lets marketing staff work without full admin rights.
 </Challenge>
 
+<Challenge n={5} title="Fast product images on a slow mobile connection">
+  Product photos loaded slowly because every image passed through the CMS before reaching the browser, and was then resized on first view. Images are now served straight from the storage CDN at pre-made sizes, with the first row loading eagerly. The catalogue shows at least six products on a phone screen, with a sticky search bar and pagination. Product photos zoom in place and never open as a separate link, so visitors stay on the site.
+</Challenge>
+
+<Challenge n={6} title="A content overhaul at scale">
+  The catalogue grew from a few dozen products to 142, and the blog to 88 articles. Each one has its own focus keyword, FAQs and internal links to products. All of this was done through the CMS's own API, with a full backup taken first. Writing rules kept the content honest: no invented figures, prices only where the business sets them, and weighbridges priced by quotation.
+</Challenge>
+
 ## Results
 
-The platform is live at [kirascales.com](https://kirascales.com), with integration tests covering pricing, checkout, proforma VAT and campaign audiences, and end-to-end tests of the purchase flows.
+The platform is live at [kirascales.com](https://kirascales.com), redesigned for compact mobile layouts in both light and dark modes, with integration tests covering pricing, checkout, proforma VAT and campaign audiences, and end-to-end tests of the purchase flows.
 
 <Callout type="note" title="About the code">
   The site started from Payload's official website template and was rebuilt around Kira's catalogue, checkout and marketing needs. The repository is private; we can walk through the payment and CRM design on request.

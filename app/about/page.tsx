@@ -126,7 +126,7 @@ const journey = [
     period: '2023 to present',
     title: 'Software engineering',
     description:
-      'Turned operational experience into software: first Kira Scales’ own e-commerce platform, then production systems for retail, logistics and invoicing on web and mobile.',
+      'Turned operational experience into software: first Kira Scales’ own e-commerce platform and its private operations system, then production systems for retail, logistics and invoicing on web and mobile.',
   },
   {
     icon: HiRocketLaunch,
@@ -259,7 +259,7 @@ export default function AboutPage() {
                 </p>
                 <p>
                   Running field operations showed him what business software usually gets wrong. He began building it
-                  himself: Kira Scales&apos; e-commerce platform, a logistics and dispatch system, and Maldra, an offline-first
+                  himself: Kira Scales&apos; e-commerce platform and operations Workspace, a logistics and dispatch system, and Maldra, an offline-first
                   business platform for African SMEs. AkorLabs Technologies is the company those systems now come from.
                 </p>
               </div>
